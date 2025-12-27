@@ -20,7 +20,7 @@ function Header() {
           restaurants around you. Enjoy smooth ordering and secure payments.
           Fresh, hot meals—anytime you want.
         </p>
-        <button onClick={()=>navigate('/menu')} className="inline-block text-2xl font-semibold bg-white text-gray-600 px-6 py-2 rounded-2xl hover:scale-110 transition-transform ">
+        <button onClick={()=>navigate('/menu')} className="inline-block text-2xl font-semibold bg-white text-gray-600 px-6 py-2 rounded-2xl hover:scale-110 transition-transform cursor-pointer ">
           View Menu
         </button>
       </div>

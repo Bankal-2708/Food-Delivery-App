@@ -1,8 +1,14 @@
 import React from 'react'
+import Header from '../Header/Header'
+import ExploreMenu from '../Explore Menu/ExploreMenu'
 
 function Home() {
   return (
-    <div>This is a Home Page...</div>
+    <div>
+        <Header/>
+        <ExploreMenu/>
+
+    </div>
   )
 }
 
