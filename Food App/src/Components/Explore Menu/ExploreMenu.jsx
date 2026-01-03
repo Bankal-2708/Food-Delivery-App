@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Biryani from "../../assets/Biryani.jpeg";
 import Chicken from "../../assets/Chicken.jpeg";
 import Burgur from "../../assets/Burgur.jpeg";
@@ -18,19 +18,28 @@ const menuItems = [
   { id: 3, name: "Burger", img: Burgur },
   { id: 4, name: "Idli", img: Idlie },
   { id: 5, name: "Noodles", img: Noodles },
-  { id: 6, name: "Paneer_Roll", img: Panner_Roll },
+  { id: 6, name: "Paneer Roll", img: Panner_Roll },
   { id: 7, name: "Rabri", img: Rabri },
   { id: 8, name: "Pizza", img: Pizza },
   { id: 9, name: "Pasta", img: Pasta },
   { id: 10, name: "Paratha", img: Paratha },
-  { id: 11, name: "Butter_nan", img: Butter_Nan },
+  { id: 11, name: "Butter Nan", img: Butter_Nan },
   { id: 12, name: "Momos", img: Momos },
 ];
 
 function ExploreMenu() {
+
+  // const scroolClass=({isActive})=>
+    // isActive
+    // ? "border-1-orange"
+    // : "border-none"
+
+    const [ActiveId, setActiveId]= useState("null")    
+
+
   return (
     <div className="mx-10 mt-10 flex flex-col gap-10">
-      <div className="flex flex-col gap-5 max-w-[50%] ">
+      <div className="flex flex-col gap-5 max-w-[50%] ml-3">
         <h1 className="text-4xl font-bold">Explore our menu</h1>
         <p className="text-xl ">
           Choose from a diverse meanu featureing a detectable array of dishes.
@@ -44,12 +53,20 @@ function ExploreMenu() {
             <img
               src={item.img}
               alt={item.name}
-              className="w-full h-40 object-cover rounded-full hover:scale-110 transition-transform cursor-pointer"
+              // className=""
+              onClick={()=> setActiveId(item.id)}
+              className={`w-full h-40 object-cover rounded-full hover:scale-110 transition-transform cursor-pointer
+                ${ActiveId===item.id? "border-6 border-orange-700": " "}`
+                }
+              
             />
             <p className="mt-3 font-semibold">{item.name}</p>
           </div>
+          
         ))}
       </div>
+      <hr className="border-t-4 border-gray-400 mx-1 rounded-full" />
+
     </div>
   );
 }
