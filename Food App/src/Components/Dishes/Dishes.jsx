@@ -130,7 +130,6 @@ const dishes = [
     description: "Traditional sweet rice pudding flavored with cardamom",
   },
 ];
-
 function Dishes() {
   return (
 
@@ -142,7 +141,7 @@ function Dishes() {
       {dishes.map((dish) => (
         <div
           key={dish.id}
-          className="border rounded-lg p-3 shadow hover:shadow-lg transition"
+          className="border rounded-lg p-3 shadow hover:shadow-2xl transition"
         >
           <img
             src={dish.img}

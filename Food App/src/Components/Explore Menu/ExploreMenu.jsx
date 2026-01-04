@@ -28,20 +28,22 @@ const menuItems = [
 ];
 
 function ExploreMenu() {
-
   // const scroolClass=({isActive})=>
-    // isActive
-    // ? "border-1-orange"
-    // : "border-none"
+  // isActive
+  // ? "border-1-orange"
+  // : "border-none"
 
-    const [ActiveId, setActiveId]= useState("null")    
-
+  const [ActiveId, setActiveId] = useState("null");
 
   return (
     <div className="mx-10 mt-10 flex flex-col gap-10">
-      <div className="flex flex-col gap-5 max-w-[50%] ml-3">
+      <div
+        className="flex flex-col gap-5 w-full md:max-w-[50%] ml-3
+                items-center text-center
+                md:items-start md:text-left md:mx-0"
+      >
         <h1 className="text-4xl font-bold">Explore our menu</h1>
-        <p className="text-xl ">
+        <p className="text-xl  ">
           Choose from a diverse meanu featureing a detectable array of dishes.
           Our mission is to satisfy your craving and elevate your dining
           experience, one delicious meal at a time.
@@ -54,19 +56,15 @@ function ExploreMenu() {
               src={item.img}
               alt={item.name}
               // className=""
-              onClick={()=> setActiveId(item.id)}
+              onClick={() => setActiveId(item.id)}
               className={`w-full h-40 object-cover rounded-full hover:scale-110 transition-transform cursor-pointer
-                ${ActiveId===item.id? "border-6 border-orange-700": " "}`
-                }
-              
+                ${ActiveId === item.id ? "border-6 border-orange-700" : " "}`}
             />
             <p className="mt-3 font-semibold">{item.name}</p>
           </div>
-          
         ))}
       </div>
       <hr className="border-t-4 border-gray-400 mx-1 rounded-full" />
-
     </div>
   );
 }

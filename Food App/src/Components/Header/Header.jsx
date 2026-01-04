@@ -13,14 +13,14 @@ function Header() {
           className="h-170 w-full object-cover rounded-xl relative"
         />
       </div>
-      <div className=" text-white max-w-[50%] absolute bottom-20 left-50 flex flex-col gap-8 items-start animate-[fadeIn_5s_ease-out_forwards]">
-        <h1 className="font-bold text-7xl leading-tight">Order your <br/>favourite food here</h1>
-        <p className="text-2xl">
+      <div className=" text-white max-w-[50%] absolute md:bottom-20 bottom-0 left-30 md:left-50 flex flex-col gap-1 md:gap-8 items-start animate-[fadeIn_5s_ease-out_forwards]">
+        <h1 className="font-bold md:text-7xl leading-tight text-6xl">Order your <br/>favourite food here</h1>
+        <p className="md:text-2xl text-xl">
           Craving your favorite food? We deliver it fast. Choose from top
           restaurants around you. Enjoy smooth ordering and secure payments.
           Fresh, hot meals—anytime you want.
         </p>
-        <button onClick={()=>navigate('/menu')} className="inline-block text-2xl font-semibold bg-white text-gray-600 px-6 py-2 rounded-2xl hover:scale-110 transition-transform cursor-pointer ">
+        <button onClick={()=>navigate('/menu')} className="inline-block text-2xl font-semibold bg-white text-gray-600 px-6 py-2 rounded-2xl hover:scale-110 transition-transform cursor-pointer mt-4 ">
           View Menu
         </button>
       </div>
