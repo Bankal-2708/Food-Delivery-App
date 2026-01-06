@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Pizza from "../../assets/Pizza_1.jpeg";
 import Dosa from "../../assets/Dosa.jpeg";
 import Momos from "../../assets/Momos_1.jpeg";
@@ -14,9 +14,13 @@ import Egg_Biryani from '../../assets/Egg_Biryani.jpeg';
 import Mix_Momo from '../../assets/Mix_Momo.jpeg';
 import Pasta from '../../assets/Paasta.jpeg';
 import Rice_Kheer from '../../assets/Rice_Kheer.jpeg';
+import add from '../../assets/add.png';
+import greenAdd from '../../assets/green_add.png'
+import minus from '../../assets/minus.png'
 
 
 const dishes = [
+  
   {
     id: 1,
     name: "Pizza",
@@ -24,6 +28,7 @@ const dishes = [
     price: "$10",
     Rating: Rating,
     description: "Cheesy pizza topped with fresh vegetables and herbs",
+    count:0
   },
   {
     id: 2,
@@ -32,6 +37,7 @@ const dishes = [
     price: "$6",
     Rating: Rating,
     description: "Crispy South Indian dosa served with chutney and sambar",
+    count:0
   },
   {
     id: 3,
@@ -40,6 +46,7 @@ const dishes = [
     price: "$5",
     Rating: Rating,
     description: "Steamed momos stuffed with spicy vegetable filling",
+    count:0
   },
   {
     id: 4,
@@ -48,6 +55,7 @@ const dishes = [
     price: "$8",
     Rating: Rating,
     description: "Soft naan bread stuffed with seasoned paneer",
+    count:0
   },
   {
     id: 5,
@@ -56,6 +64,7 @@ const dishes = [
     price: "$9",
     Rating: Rating,
     description: "Grilled paneer cubes marinated in Indian spices",
+    count:0
   },
   {
     id: 6,
@@ -64,6 +73,7 @@ const dishes = [
     price: "$7",
     Rating: Rating,
     description: "Spicy mashed vegetable curry served with buttered pav",
+    count:0
   },
   {
     id: 7,
@@ -72,6 +82,7 @@ const dishes = [
     price: "$6",
     Rating: Rating,
     description: "Red kidney bean curry served with steamed rice",
+    count:0
   },
   {
     id: 8,
@@ -80,6 +91,7 @@ const dishes = [
     price: "$4",
     Rating: Rating,
     description: "Grilled vegetable sandwich with cheese and sauces",
+    count:0
   },
   {
     id: 9,
@@ -88,6 +100,7 @@ const dishes = [
     price: "$7",
     Rating: Rating,
     description: "Juicy burger with fresh veggies and special sauce",
+    count:0
   },
   {
     id: 10,
@@ -96,6 +109,7 @@ const dishes = [
     price: "$8",
     Rating: Rating,
     description: "Spicy chickpea curry served with fluffy fried bhature",
+    count:0
   },
   {
     id: 11,
@@ -104,6 +118,7 @@ const dishes = [
     price: "$9",
     Rating: Rating,
     description: "Aromatic basmati rice cooked with eggs and spices",
+    count:0
   },
   {
     id: 12,
@@ -112,6 +127,7 @@ const dishes = [
     price: "$6",
     Rating: Rating,
     description: "Assorted momos with mixed vegetable stuffing",
+    count:0
   },
   {
     id: 13,
@@ -120,6 +136,7 @@ const dishes = [
     price: "$7",
     Rating: Rating,
     description: "Creamy pasta tossed with herbs and vegetables",
+    count:0
   },
   {
     id: 14,
@@ -128,27 +145,58 @@ const dishes = [
     price: "$5",
     Rating: Rating,
     description: "Traditional sweet rice pudding flavored with cardamom",
+    count:0
   },
 ];
+
+// const dishe={
+//   img:add
+// }
 function Dishes() {
+
+  const [itemCount, setitemCount] = useState(dishes)
+ 
+const additem=(id)=>{
+  setitemCount(prev=>
+    prev.map(dish=>
+      dish.id==id
+      ?{...dish, count:dish.count+1}
+      : dish
+    )
+  );
+}
+  
+const removeitem=(id)=>{
+  setitemCount(prev=>
+    prev.map(dish=>
+      dish.id===id && dish.count>0
+      ?{...dish, count:dish.count-1}
+      : dish
+    )
+  );
+}
+
+
+
   return (
 
     <div className="m-7">
         <div className="ml-6">
             <h1 className="font-bold text-3xl" >Top dishes near you</h1>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 p-4 ">
-      {dishes.map((dish) => (
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 p-4 animate-[fadeIn_3s_ease-out_forwards]">
+      {itemCount.map((dish) => (
         <div
           key={dish.id}
-          className="border rounded-lg p-3 shadow hover:shadow-2xl transition"
+          className="border border-gray-300 rounded-lg p-3 shadow hover:shadow-2xl transition"
         >
           <img
             src={dish.img}
             alt={dish.name}
             className="h-40 w-full object-cover rounded"
           />
-
+         
+          
           <div className="flex justify-between">
             <h3 className="mt-2 font-semibold">{dish.name}</h3>
             <img src={dish.Rating} alt="" 
@@ -156,12 +204,33 @@ function Dishes() {
             />
           </div>
           <p className="text-sm font-bold text-gray-600">{dish.description}</p>
-          <p className="font-bold text-green-600">{dish.price}</p>
+          <div className="flex justify-between">
+            <p className="font-bold text-green-600 text-2xl">{dish.price}</p>
+            {!itemCount
+              ?<img onClick={()=>{
+
+                console.log(dish.id)
+                setitemCount(prev=>prev+1)}} src={add} alt=""
+                className="h-6 w-6 object-cover mr-4 outline-2 outline-black-500 outline-offset-4 rounded-full 
+                "
+                />
+              :<div className="flex justify-center items-center gap-3"> 
+                <img onClick={()=>removeitem(dish.id)} src={minus} alt=""
+                className="h-5 w-5 object-cover outline-2 outline-red-500 outline-offset-4 rounded-full cursor-pointer "  
+              />
+              <p className="text-2xl">{dish.count}</p>
+              <img onClick={()=>additem(dish.id)} src={greenAdd} alt=""
+                className="h-5 w-5 object-cover mr-4 outline-2 outline-green-500 outline-offset-4 rounded-full cursor-pointer "  
+              />
+              </div>
+            }
+          </div>
         </div>
       ))}
     </div>
     </div>
   );
+  
 }
 
 export default Dishes;
