@@ -1,0 +1,68 @@
+import React, { useContext } from "react";
+import { CartContext } from "../../Context/cartContext";
+
+function Cart() {
+  const { cart } = useContext(CartContext);
+
+  const filteredItems = cart.filter((item) => item.count > 0);
+
+  const totalPrice = filteredItems.reduce((acc, item) => {
+    const price = parseInt(item.price.replace("$", ""));
+    return acc + price * item.count;
+  }, 0);
+
+  return (
+    <div className="p-8 max-w-4xl mx-auto">
+      <h1 className="text-3xl font-bold mb-6">Your Shopping Cart</h1>
+
+      {filteredItems.length === 0 ? (
+        <div className="text-center py-10">
+          <p className="text-gray-500 text-xl">Your cart is empty!</p>
+          <a href="/" className="text-blue-500 underline mt-4 inline-block">
+            Go back to menu
+          </a>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {filteredItems.map((item) => (
+            <div
+              key={item.id}
+              className="flex items-center justify-between border-b pb-4"
+            >
+              <div className="flex items-center gap-4">
+                <img
+                  src={item.img}
+                  alt={item.name}
+                  className="w-20 h-20 object-cover rounded"
+                />
+                <div>
+                  <h2 className="font-semibold text-lg">{item.name}</h2>
+                  <p className="text-gray-600">Price: {item.price}</p>
+                </div>
+              </div>
+
+              <div className="text-right">
+                <p className="font-bold text-lg">Quantity: {item.count}</p>
+                <p className="text-green-600 font-bold">
+                  Subtotal: $
+                  {parseInt(item.price.replace("$", "")) * item.count}
+                </p>
+              </div>
+            </div>
+          ))}
+
+          <div className="mt-8 border-t pt-4 flex justify-between items-center">
+            <h2 className="text-2xl font-bold">Total Bill:</h2>
+            <p className="text-2xl font-bold text-green-700">${totalPrice}</p>
+          </div>
+
+          <button className="w-full bg-orange-500 text-white py-3 rounded-lg font-bold mt-4 hover:bg-orange-600">
+            Proceed to Checkout
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default Cart;
