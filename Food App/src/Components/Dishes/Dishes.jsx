@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import Pizza from "../../assets/Pizza_1.jpeg";
 import Dosa from "../../assets/Dosa.jpeg";
 import Momos from "../../assets/Momos_1.jpeg";
@@ -149,29 +149,15 @@ const dishes = [
 ];
 
 function Dishes() {
-  const [itemCount, setitemCount] = useState(dishes);
-  const { setCart } = useContext(CartContext);
+  const { cart, addItemToCart, removeItemFromCart } = useContext(CartContext);
 
-
-  const additem = (id) => {
-    setitemCount((prev) =>
-      prev.map((dish) =>
-        dish.id == id ? { ...dish, count: dish.count + 1 } : dish
-      )
-    );
-    const cartItems = itemCount.filter((item) => item.count > 0);
-    
-    setCart(cartItems);
+  const handleAddItem = (id) => {
+    const item = dishes.find((dish) => dish.id === id);
+    addItemToCart(item); 
   };
 
-  const removeitem = (id) => {
-    setitemCount((prev) =>
-      prev.map((dish) =>
-        dish.id === id && dish.count > 0
-          ? { ...dish, count: dish.count - 1 }
-          : dish
-      )
-    );
+  const handleRemoveItem = (id) => {
+    removeItemFromCart(id);
   };
 
   return (
@@ -179,8 +165,8 @@ function Dishes() {
       <div className="ml-6">
         <h1 className="font-bold text-3xl">Top dishes near you</h1>
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 p-4 animate-[fadeIn_1s_ease-out_forwards]">
-        {itemCount.map((dish) => (
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 p-4">
+        {dishes.map((dish) => (
           <div
             key={dish.id}
             className="border border-gray-300 rounded-lg p-3 shadow hover:shadow-2xl transition"
@@ -190,47 +176,36 @@ function Dishes() {
               alt={dish.name}
               className="h-40 w-full object-cover rounded"
             />
+            <h3 className="mt-2 font-semibold">{dish.name}</h3>
+            <p>{dish.description}</p>
+            <p className="font-bold text-green-600 text-2xl">{dish.price}</p>
 
             <div className="flex justify-between">
-              <h3 className="mt-2 font-semibold">{dish.name}</h3>
-              <img
-                src={dish.Rating}
-                alt=""
-                className="h-10 w-30 object-cover"
-              />
-            </div>
-            <p className="text-sm font-bold text-gray-600">
-              {dish.description}
-            </p>
-            <div className="flex justify-between">
-              <p className="font-bold text-green-600 text-2xl">{dish.price}</p>
-              {dish.count === 0 ? (
-                <img
-                  onClick={() => {
-                    // console.log(dish.id)
-                    additem(dish.id);
-                  }}
-                  src={add}
-                  alt=""
-                  className="h-5 w-5 object-cover mr-4 outline-2 outline-black-500 outline-offset-4 rounded-full cursor-pointer
-                "
-                />
-              ) : (
-                <div className="flex justify-center items-center gap-3">
+              {/* Check if the dish is already in the cart */}
+              {cart.some((item) => item.id === dish.id) ? (
+                <div className="flex items-center gap-3">
                   <img
-                    onClick={() => removeitem(dish.id)}
+                    onClick={() => handleRemoveItem(dish.id)}
                     src={minus}
-                    alt=""
-                    className="h-4 w-4 object-cover outline-2 outline-red-500 outline-offset-4 rounded-full cursor-pointer "
+                    alt="Remove"
+                    className="h-4 w-4 cursor-pointer"
                   />
-                  <p className="text-2xl">{dish.count}</p>
+                  {/* Find the count of the item in the cart */}
+                  <p>{cart.find((item) => item.id === dish.id)?.count}</p>
                   <img
-                    onClick={() => additem(dish.id)}
+                    onClick={() => handleAddItem(dish.id)}
                     src={greenAdd}
-                    alt=""
-                    className="h-4 w-4 object-cover mr-4 outline-2 outline-green-500 outline-offset-4 rounded-full cursor-pointer "
+                    alt="Add"
+                    className="h-4 w-4 cursor-pointer"
                   />
                 </div>
+              ) : (
+                <img
+                  onClick={() => handleAddItem(dish.id)}
+                  src={add}
+                  alt="Add"
+                  className="h-5 w-5 cursor-pointer"
+                />
               )}
             </div>
           </div>
