@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+// import React, { useState } from "react";
 import Biryani from "../../assets/Biryani.jpeg";
 import Chicken from "../../assets/Chicken.jpeg";
 import Burgur from "../../assets/Burgur.jpeg";
@@ -27,13 +27,13 @@ const menuItems = [
   { id: 12, name: "Momos", img: Momos },
 ];
 
-function ExploreMenu() {
+function ExploreMenu({ category, setCategory }) {
   // const scroolClass=({isActive})=>
   // isActive
   // ? "border-1-orange"
   // : "border-none"
 
-  const [ActiveId, setActiveId] = useState("null");
+  // const [ActiveId, setActiveId] = useState("null");
 
   return (
     <div className="mx-10 mt-10 flex flex-col gap-10">
@@ -56,9 +56,15 @@ function ExploreMenu() {
               src={item.img}
               alt={item.name}
               // className=""
-              onClick={() => setActiveId(item.id)}
-              className={`w-full h-40 object-cover rounded-full hover:scale-110 transition-transform cursor-pointer
-                ${ActiveId === item.id ? "border-6 border-orange-700" : " "}`}
+              onClick={() =>
+                setCategory(prev =>
+                  prev === item.name ? "All" : item.name
+                )
+              }
+
+              className={`w-full h-40 object-cover rounded-full cursor-pointer
+                  ${category === item.name ? "border-6 border-orange-700" : ""}`}
+
             />
             <p className="mt-3 font-semibold">{item.name}</p>
           </div>

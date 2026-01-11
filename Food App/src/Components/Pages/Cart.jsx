@@ -1,8 +1,11 @@
 import React, { useContext } from "react";
 import { CartContext } from "../../Context/cartContext";
+import minus from "../../assets/minus.png";
+import greenAdd from "../../assets/green_add.png";
+import { Link } from "react-router-dom";
 
 function Cart() {
-  const { cart } = useContext(CartContext);
+  const { cart, addItemToCart, removeItemFromCart } = useContext(CartContext);
 
   const filteredItems = cart.filter((item) => item.count > 0);
 
@@ -11,14 +14,23 @@ function Cart() {
     return acc + price * item.count;
   }, 0);
 
+  const handleAddItem = (id) => {
+    const item = cart.find((dish) => dish.id === id);
+    addItemToCart(item);
+  };
+
+  const handleRemoveItem = (id) => {
+    removeItemFromCart(id); 
+  };
+
   return (
     <div className="p-8 max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">Your Shopping Cart</h1>
+      <h1 className="text-4xl py-1 font-bold mb-6 w-full  hover:bg-gray-200  rounded-4xl text-center ">Your Shopping Cart</h1>
 
       {filteredItems.length === 0 ? (
         <div className="text-center py-10">
-          <p className="text-gray-500 text-xl">Your cart is empty!</p>
-          <a href="/" className="text-blue-500 underline mt-4 inline-block">
+          <p className="text-gray-500 text-2xl ">Your cart is empty!</p>
+          <a href="/" className="text-blue-500 underline mt-4 text-2xl inline-block">
             Go back to menu
           </a>
         </div>
@@ -42,8 +54,23 @@ function Cart() {
               </div>
 
               <div className="text-right">
-                <p className="font-bold text-lg">Quantity: {item.count}</p>
-                <p className="text-green-600 font-bold">
+                <div className="flex items-center gap-4">
+                  <img
+                    src={minus}
+                    alt="Remove"
+                    className="h-5 w-5 cursor-pointer"
+                    onClick={() => handleRemoveItem(item.id)}
+                  />
+                  <p className="font-bold text-lg">{item.count}</p>
+                  <img
+                    src={greenAdd}
+                    alt="Add"
+                    className="h-5 w-5 cursor-pointer"
+                    onClick={() => handleAddItem(item.id)}
+                  />
+                </div>
+
+                <p className="text-green-600 font-bold mt-2">
                   Subtotal: $
                   {parseInt(item.price.replace("$", "")) * item.count}
                 </p>
@@ -59,6 +86,13 @@ function Cart() {
           <button className="w-full bg-orange-500 text-white py-3 rounded-lg font-bold mt-4 hover:bg-orange-600">
             Proceed to Checkout
           </button>
+          <div>
+            <Link to='/'>
+              <button className="w-full bg-orange-500 text-white py-3 rounded-lg font-bold mt-4 hover:bg-orange-600">
+                Go To Home
+              </button>
+            </Link>
+          </div>
         </div>
       )}
     </div>

@@ -13,19 +13,37 @@ const CartProvider = ({ children }) => {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
 
+
+  
   const addItemToCart = (item) => {
-    setCart((prevCart) => {
-      const existingItem = prevCart.find((cartItem) => cartItem.id === item.id);
-      if (existingItem) {
-        return prevCart.map((cartItem) =>
+  setCart(prev =>
+    prev.some(cartItem => cartItem.id === item.id)
+      ? prev.map(cartItem =>
           cartItem.id === item.id
             ? { ...cartItem, count: cartItem.count + 1 }
             : cartItem
-        );
-      }
-      return [...prevCart, { ...item, count: 1 }];
-    });
-  };
+        )
+      : [...prev, { ...item, count: 1 }]
+  );
+};
+
+
+  // const addItemToCart = (item) => {
+  //   setCart((prevCart) => {
+  //     const existingItem = prevCart.find((cartItem) => cartItem.id === item.id);
+  //     if (existingItem) {
+  //       return prevCart.map((cartItem) =>
+  //         cartItem.id === item.id
+  //           ? { ...cartItem, count: cartItem.count + 1 }
+  //           : cartItem
+  //       );
+  //     }
+  //     return [...prevCart, { ...item, count: 1 }];
+  //   });
+  // };
+
+
+
 
   const removeItemFromCart = (id) => {
     setCart((prevCart) => {

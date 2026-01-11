@@ -23,6 +23,7 @@ const dishes = [
   {
     id: 1,
     name: "Pizza",
+    category: "Pizza",
     img: Pizza,
     price: "$10",
     Rating: Rating,
@@ -32,6 +33,7 @@ const dishes = [
   {
     id: 2,
     name: "Dosa",
+    category: "Dosa",
     img: Dosa,
     price: "$6",
     Rating: Rating,
@@ -41,6 +43,7 @@ const dishes = [
   {
     id: 3,
     name: "Momos",
+    category: "Momos",
     img: Momos,
     price: "$5",
     Rating: Rating,
@@ -50,6 +53,7 @@ const dishes = [
   {
     id: 4,
     name: "Paneer Nan",
+    category: "Paneer Roll",
     img: Panner_Nan,
     price: "$8",
     Rating: Rating,
@@ -59,6 +63,7 @@ const dishes = [
   {
     id: 5,
     name: "Paneer Tikka",
+    category: "Paneer Roll",
     img: Panner_Tikka,
     price: "$9",
     Rating: Rating,
@@ -68,6 +73,7 @@ const dishes = [
   {
     id: 6,
     name: "Pav Bhaji",
+    category: "Biryani",
     img: Pav_Bhaji,
     price: "$7",
     Rating: Rating,
@@ -77,6 +83,7 @@ const dishes = [
   {
     id: 7,
     name: "Rajma Rice",
+    category: "Biryani",
     img: Rajma_Rice,
     price: "$6",
     Rating: Rating,
@@ -86,6 +93,7 @@ const dishes = [
   {
     id: 8,
     name: "Sandwich",
+    category: "Burger",
     img: Sandwhich,
     price: "$4",
     Rating: Rating,
@@ -95,6 +103,7 @@ const dishes = [
   {
     id: 9,
     name: "Burger",
+    category: "Burger",
     img: Burgur,
     price: "$7",
     Rating: Rating,
@@ -104,6 +113,7 @@ const dishes = [
   {
     id: 10,
     name: "Chole Bhature",
+    category: "Paratha",
     img: Chola_Bhutura,
     price: "$8",
     Rating: Rating,
@@ -113,6 +123,7 @@ const dishes = [
   {
     id: 11,
     name: "Egg Biryani",
+    category: "Biryani",
     img: Egg_Biryani,
     price: "$9",
     Rating: Rating,
@@ -122,6 +133,7 @@ const dishes = [
   {
     id: 12,
     name: "Mix Momos",
+    category: "Momos",
     img: Mix_Momo,
     price: "$6",
     Rating: Rating,
@@ -131,6 +143,7 @@ const dishes = [
   {
     id: 13,
     name: "Pasta",
+    category: "Pasta",
     img: Pasta,
     price: "$7",
     Rating: Rating,
@@ -140,6 +153,7 @@ const dishes = [
   {
     id: 14,
     name: "Rice Kheer",
+    category: "Rabri",
     img: Rice_Kheer,
     price: "$5",
     Rating: Rating,
@@ -148,25 +162,33 @@ const dishes = [
   },
 ];
 
-function Dishes() {
+
+function Dishes({ category }) {
   const { cart, addItemToCart, removeItemFromCart } = useContext(CartContext);
 
   const handleAddItem = (id) => {
     const item = dishes.find((dish) => dish.id === id);
-    addItemToCart(item); 
+    addItemToCart(item);
   };
 
   const handleRemoveItem = (id) => {
     removeItemFromCart(id);
   };
 
+  const filteredDishes =
+    category === "All"
+      ? dishes
+      : dishes.filter(dish => dish.category === category);
+
+
   return (
-    <div className="m-7">
+    <div className="m-7 ">
       <div className="ml-6">
         <h1 className="font-bold text-3xl">Top dishes near you</h1>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6 p-4">
-        {dishes.map((dish) => (
+        {filteredDishes.map((dish) => (
+
           <div
             key={dish.id}
             className="border border-gray-300 rounded-lg p-3 shadow hover:shadow-2xl transition"
@@ -174,39 +196,41 @@ function Dishes() {
             <img
               src={dish.img}
               alt={dish.name}
-              className="h-40 w-full object-cover rounded"
+              className="h-40 w-full object-cover rounded pt-5"
             />
             <h3 className="mt-2 font-semibold">{dish.name}</h3>
             <p>{dish.description}</p>
-            <p className="font-bold text-green-600 text-2xl">{dish.price}</p>
+            <div className=" flex justify-between">
+              <p className="font-bold text-green-600 text-2xl">{dish.price}</p>
 
-            <div className="flex justify-between">
-              {/* Check if the dish is already in the cart */}
-              {cart.some((item) => item.id === dish.id) ? (
-                <div className="flex items-center gap-3">
-                  <img
-                    onClick={() => handleRemoveItem(dish.id)}
-                    src={minus}
-                    alt="Remove"
-                    className="h-4 w-4 cursor-pointer"
-                  />
-                  {/* Find the count of the item in the cart */}
-                  <p>{cart.find((item) => item.id === dish.id)?.count}</p>
+              <div className="flex justify-between mr-2">
+
+                {cart.some((item) => item.id === dish.id) ? (
+                  <div className="flex items-center gap-3">
+                    <img
+                      onClick={() => handleRemoveItem(dish.id)}
+                      src={minus}
+                      alt="Remove"
+                      className="h-5 w-5 cursor-pointer"
+                    />
+
+                    <p className="font-bold text-2xl">{cart.find((item) => item.id === dish.id)?.count}</p>
+                    <img
+                      onClick={() => handleAddItem(dish.id)}
+                      src={greenAdd}
+                      alt="Add"
+                      className="h-5 w-5 cursor-pointer"
+                    />
+                  </div>
+                ) : (
                   <img
                     onClick={() => handleAddItem(dish.id)}
-                    src={greenAdd}
+                    src={add}
                     alt="Add"
-                    className="h-4 w-4 cursor-pointer"
+                    className="h-5 w-5 cursor-pointer"
                   />
-                </div>
-              ) : (
-                <img
-                  onClick={() => handleAddItem(dish.id)}
-                  src={add}
-                  alt="Add"
-                  className="h-5 w-5 cursor-pointer"
-                />
-              )}
+                )}
+              </div>
             </div>
           </div>
         ))}

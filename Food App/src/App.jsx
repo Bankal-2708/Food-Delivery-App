@@ -6,6 +6,7 @@ import Contact from "./Components/Pages/Contact";
 import Mobile from "./Components/Pages/Mobile";
 import Cart from "./Components/Pages/Cart";
 import CartProvider from "./Context/CartContextProvider";
+import Footer from "./Components/Footer/Footer";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/cart" element={<Cart />} />
         </Routes>
+        <Footer/>
       </CartProvider>
     </div>
   );
