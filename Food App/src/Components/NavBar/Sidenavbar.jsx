@@ -17,7 +17,7 @@ export default function Sidenavbar({ onClose }) {
         { id: 4, name: "Contact Us", path: "#contact", to: '/contact' },
     ];
 
-    //   const navigate = useNavigate();
+  
 
     return (
 
@@ -32,14 +32,12 @@ export default function Sidenavbar({ onClose }) {
                 onClick={(e) => e.stopPropagation()}
             >
 
-
                 <div className='flex justify-between'>
                     <img
                         src={logoimg}
                         alt=""
                         className='h-17 w-17 object-fill rounded-4xl'
                     />
-
                     <img
                         src={closeMenu}
                         alt=""
@@ -47,7 +45,6 @@ export default function Sidenavbar({ onClose }) {
                         className='h-17 w-17 object-cover  rounded-4xl cursor-pointer mr-2'
                     />
                 </div>
-
 
                 <div>
                     <ul className="flex flex-col gap-4 font-bold text-lg cursor-pointer mt-20">
@@ -63,13 +60,10 @@ export default function Sidenavbar({ onClose }) {
                                     </NavLink>
                                 )}
                                 <hr className="border-t-2 border-gray-300 my-4" />
-
                             </li>
                         ))}
                     </ul>
                 </div>
-
-
 
                 <div className='flex justify-center w-full mt-40'>
                     <button
@@ -83,8 +77,6 @@ export default function Sidenavbar({ onClose }) {
                     </button>
                 </div>
             </div>
-
         </div>
-
     );
 }

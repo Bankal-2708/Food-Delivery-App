@@ -50,7 +50,6 @@ function Navbar() {
         {open ? <Sidenavbar onClose={() => setOpen(false)} className='md: hidden' /> : null}
       </div>
 
-
       <div className="hidden sm:block">
         <ul className="flex lg:gap-7 md:gap-3 font-bold text-lg cursor-pointer">
           {items.map((item) => (
@@ -71,7 +70,6 @@ function Navbar() {
           ))}
         </ul>
       </div>
-
 
       <div className="flex lg:justify-between  px-4 pt-2 lg:px-0 lg:py-0  md:w-85 gap-8  lg:w-120 text-gray-400 ">
         <input

@@ -7,8 +7,6 @@ import { Link,  NavLink } from 'react-router-dom'
 
 function Footer() {
 
-
-
     const footerItem = [
         { id: 1, name: "Home", path: "/" },
         { id: 2, name: "About Us", path: "/about" },
@@ -50,6 +48,7 @@ function Footer() {
                         </div>
 
                     </div>
+
                     <div className='text-white flex flex-col gap-5 cursor-pointer'>
                         <h1 className='text-3xl cursor-pointer'>GET IN TOUCH</h1>
                         <div>
@@ -64,6 +63,7 @@ function Footer() {
                         </div>
                     </div>
                 </div>
+                
                 <div className='text-white text-center cursor-pointer md:mt-0 mt-5'>
                     <p>Copyright 2026 © Food.com -All Right Reserved.</p>
                 </div>

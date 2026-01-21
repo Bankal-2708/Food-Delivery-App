@@ -1,9 +1,7 @@
 import React from "react";
 import Navbarimg from "../../assets/Navbar.jpg";
-// import { useNavigate } from "react-router-dom";
 
 function Header() {
-  // const navigate = useNavigate()
   return (
 
     <div className="relative pt-20">

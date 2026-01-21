@@ -174,14 +174,12 @@ function Dishes({ category, }) {
   const handleRemoveItem = (id) => {
     removeItemFromCart(id);
   };
-  // const searchTerm=useState("");
 
   const filteredDishes = dishes.filter(dish => {
     const matchesCategory = category === "All" || dish.category === category;
     const matchesSearch = dish.name.toLowerCase().includes(debounce.toLowerCase() || "");
     return matchesCategory && matchesSearch;
   });
-
 
   return (
     <div className="lg:m-7 ">
@@ -208,9 +206,6 @@ function Dishes({ category, }) {
               
               <div className="flex justify-between items-center mr-2 pb-0.5">
 
-              
-
-               
                 {cart.some((item) => item.id === dish.id) ? (
                   <div className="flex items-center gap-3">
                     <img
