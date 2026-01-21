@@ -3,9 +3,11 @@ import logo from '../../assets/Logo.jpg'
 import Fb from '../../assets/Fb.jpeg'
 import Tw from '../../assets/Tw.jpeg'
 import Ld from '../../assets/Ld.jpeg'
-import { Link, NavLink } from 'react-router-dom'
+import { Link,  NavLink } from 'react-router-dom'
 
 function Footer() {
+
+
 
     const footerItem = [
         { id: 1, name: "Home", path: "/" },
@@ -15,7 +17,7 @@ function Footer() {
     ];
     return (
         < >
-            <div className='mx-10 bg-zinc-700 p-6 rounded-2xl  '>
+            <div id="contact" className='lg:mx-10 bg-zinc-700 p-6 rounded-2xl  mt-10'>
                 <div className='flex flex-col justify-between text-center md:flex md:flex-row  gap-10' >
                     <div className='flex flex-col gap-4 text-center items-center md:items-center'>
                         <img src={logo} alt=""
@@ -53,6 +55,12 @@ function Footer() {
                         <div>
                             <p className='text-xl font-bold '>+91 8218058872</p>
                             <p className='text-xl font-bold '>contact@food.com</p>
+                            <Link
+                                to="/contact"
+                                className="text-xl font-bold text-blue-400 hover:underline cursor-pointer"
+                            >
+                                More Info
+                            </Link>
                         </div>
                     </div>
                 </div>

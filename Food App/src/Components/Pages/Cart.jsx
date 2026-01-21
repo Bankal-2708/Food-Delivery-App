@@ -5,7 +5,7 @@ import greenAdd from "../../assets/green_add.png";
 import { Link } from "react-router-dom";
 
 function Cart() {
-  const { cart, addItemToCart, removeItemFromCart } = useContext(CartContext);
+  const { cart, addItemToCart, removeItemFromCart, clearCart } = useContext(CartContext);
 
   const filteredItems = cart.filter((item) => item.count > 0);
 
@@ -20,11 +20,15 @@ function Cart() {
   };
 
   const handleRemoveItem = (id) => {
-    removeItemFromCart(id); 
+    removeItemFromCart(id);
   };
 
+
+
+
+
   return (
-    <div className="p-8 max-w-4xl mx-auto">
+    <div className="p-8 pt-15 md:pt-30 max-w-4xl mx-auto">
       <h1 className="text-4xl py-1 font-bold mb-6 w-full  hover:bg-gray-200  rounded-4xl text-center ">Your Shopping Cart</h1>
 
       {filteredItems.length === 0 ? (
@@ -93,6 +97,10 @@ function Cart() {
               </button>
             </Link>
           </div>
+          <button onClick={clearCart}
+            className="w-full bg-orange-500 text-white py-3 rounded-lg font-bold mt-4 hover:bg-orange-600">
+            Clear Cart
+          </button>
         </div>
       )}
     </div>

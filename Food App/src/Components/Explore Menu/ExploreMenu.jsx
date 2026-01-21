@@ -36,9 +36,9 @@ function ExploreMenu({ category, setCategory }) {
   // const [ActiveId, setActiveId] = useState("null");
 
   return (
-    <div className="mx-10 mt-10 flex flex-col gap-10">
+    <div id="menu" className="mg:mx-10 mt-15 flex flex-col gap-10">
       <div
-        className="flex flex-col gap-5 w-full md:max-w-[50%] ml-3
+        className="flex flex-col md:gap-5 gap-5 w-full md:max-w-[50%] ml-3
                 items-center text-center
                 md:items-start md:text-left md:mx-0"
       >

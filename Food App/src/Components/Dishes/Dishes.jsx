@@ -163,8 +163,8 @@ const dishes = [
 ];
 
 
-function Dishes({ category }) {
-  const { cart, addItemToCart, removeItemFromCart } = useContext(CartContext);
+function Dishes({ category, }) {
+  const { cart, addItemToCart, removeItemFromCart, debounce  } = useContext(CartContext);
 
   const handleAddItem = (id) => {
     const item = dishes.find((dish) => dish.id === id);
@@ -174,19 +174,21 @@ function Dishes({ category }) {
   const handleRemoveItem = (id) => {
     removeItemFromCart(id);
   };
+  // const searchTerm=useState("");
 
-  const filteredDishes =
-    category === "All"
-      ? dishes
-      : dishes.filter(dish => dish.category === category);
+  const filteredDishes = dishes.filter(dish => {
+    const matchesCategory = category === "All" || dish.category === category;
+    const matchesSearch = dish.name.toLowerCase().includes(debounce.toLowerCase() || "");
+    return matchesCategory && matchesSearch;
+  });
 
 
   return (
-    <div className="m-7 ">
+    <div className="lg:m-7 ">
       <div className="ml-6">
         <h1 className="font-bold text-3xl">Top dishes near you</h1>
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 p-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 lg:p-4 pb-5">
         {filteredDishes.map((dish) => (
 
           <div
@@ -196,30 +198,35 @@ function Dishes({ category }) {
             <img
               src={dish.img}
               alt={dish.name}
-              className="h-40 w-full object-cover rounded pt-5"
+              className="h-40 w-full object-cover rounded-2xl mt-5"
             />
             <h3 className="mt-2 font-semibold">{dish.name}</h3>
             <p>{dish.description}</p>
             <div className=" flex justify-between">
               <p className="font-bold text-green-600 text-2xl">{dish.price}</p>
 
-              <div className="flex justify-between mr-2">
+              
+              <div className="flex justify-between items-center mr-2 pb-0.5">
 
+              
+
+               
                 {cart.some((item) => item.id === dish.id) ? (
                   <div className="flex items-center gap-3">
                     <img
                       onClick={() => handleRemoveItem(dish.id)}
                       src={minus}
                       alt="Remove"
-                      className="h-5 w-5 cursor-pointer"
+                      className="h-6 w-6 cursor-pointer"
                     />
-
-                    <p className="font-bold text-2xl">{cart.find((item) => item.id === dish.id)?.count}</p>
+                    <p className="font-bold text-2xl leading-none">
+                      {cart.find((item) => item.id === dish.id)?.count}
+                    </p>
                     <img
                       onClick={() => handleAddItem(dish.id)}
                       src={greenAdd}
                       alt="Add"
-                      className="h-5 w-5 cursor-pointer"
+                      className="h-6 w-6 cursor-pointer"
                     />
                   </div>
                 ) : (
@@ -227,10 +234,11 @@ function Dishes({ category }) {
                     onClick={() => handleAddItem(dish.id)}
                     src={add}
                     alt="Add"
-                    className="h-5 w-5 cursor-pointer"
+                    className="h-6 w-6 cursor-pointer"
                   />
                 )}
               </div>
+
             </div>
           </div>
         ))}

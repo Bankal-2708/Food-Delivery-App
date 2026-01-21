@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { CartContext } from "./cartContext";
 
-
-
 const CartProvider = ({ children }) => {
   const [cart, setCart] = useState(() => {
     const storedCart = localStorage.getItem('cart');
@@ -13,7 +11,23 @@ const CartProvider = ({ children }) => {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
 
+  const clearCart = () => {
+  setCart([]); 
+  }
+  
 
+  const [searchTerm, setSearchTerm]= useState("");
+
+  const [debounce, setDebounde]=useState("");
+  
+  useEffect(()=>{
+
+  const timer=setTimeout(()=>{
+    setDebounde(searchTerm);
+  },500);
+
+  return()=>clearTimeout(timer);
+},[searchTerm]);
   
   const addItemToCart = (item) => {
   setCart(prev =>
@@ -26,24 +40,6 @@ const CartProvider = ({ children }) => {
       : [...prev, { ...item, count: 1 }]
   );
 };
-
-
-  // const addItemToCart = (item) => {
-  //   setCart((prevCart) => {
-  //     const existingItem = prevCart.find((cartItem) => cartItem.id === item.id);
-  //     if (existingItem) {
-  //       return prevCart.map((cartItem) =>
-  //         cartItem.id === item.id
-  //           ? { ...cartItem, count: cartItem.count + 1 }
-  //           : cartItem
-  //       );
-  //     }
-  //     return [...prevCart, { ...item, count: 1 }];
-  //   });
-  // };
-
-
-
 
   const removeItemFromCart = (id) => {
     setCart((prevCart) => {
@@ -58,7 +54,12 @@ const CartProvider = ({ children }) => {
   };
 
   return (
-    <CartContext.Provider value={{ cart, addItemToCart, removeItemFromCart }}>
+    <CartContext.Provider value={{ cart ,clearCart,
+      addItemToCart, 
+      removeItemFromCart, 
+      searchTerm, 
+      setSearchTerm,
+      debounce }}>
       {children}
     </CartContext.Provider>
   );
