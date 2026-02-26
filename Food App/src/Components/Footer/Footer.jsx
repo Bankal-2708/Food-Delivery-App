@@ -3,7 +3,7 @@ import logo from '../../assets/Logo.jpg'
 import Fb from '../../assets/Fb.jpeg'
 import Tw from '../../assets/Tw.jpeg'
 import Ld from '../../assets/Ld.jpeg'
-import { Link,  NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 
 function Footer() {
 
@@ -53,7 +53,7 @@ function Footer() {
                         <h1 className='text-3xl cursor-pointer'>GET IN TOUCH</h1>
                         <div>
                             <p className='text-xl font-bold '>+91 8218058872</p>
-                            <p className='text-xl font-bold '>contact@food.com</p>
+                            <p className='text-xl font-bold '>support@food.com</p>
                             <Link
                                 to="/contact"
                                 className="text-xl font-bold text-blue-400 hover:underline cursor-pointer"
@@ -63,7 +63,7 @@ function Footer() {
                         </div>
                     </div>
                 </div>
-                
+
                 <div className='text-white text-center cursor-pointer md:mt-0 mt-5'>
                     <p>Copyright 2026 © Food.com -All Right Reserved.</p>
                 </div>

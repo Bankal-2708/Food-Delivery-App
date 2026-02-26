@@ -25,9 +25,6 @@ function ScrollToTop() {
   return null;
 }
 function App() {
-
-
-
   return (
     <div className="m-10">
       <CartProvider>
