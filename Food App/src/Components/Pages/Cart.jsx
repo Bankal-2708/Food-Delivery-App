@@ -23,10 +23,6 @@ function Cart() {
     removeItemFromCart(id);
   };
 
-
-
-
-
   return (
     <div className="p-8 pt-15 md:pt-30 max-w-4xl mx-auto">
       <h1 className="text-4xl py-1 font-bold mb-6 w-full  hover:bg-gray-200  rounded-4xl text-center ">Your Shopping Cart</h1>

@@ -30,14 +30,13 @@ function Contact() {
             </div>
           </div>
 
-
           <div className="p-10">
             <form className="space-y-5">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
                 <input
                   type="text"
-                  placeholder="John Doe"
+                  placeholder="Your Name"
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-orange-500 focus:outline-none transition-all"
                 />
               </div>
@@ -45,7 +44,7 @@ function Contact() {
                 <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
                 <input
                   type="email"
-                  placeholder="john@example.com"
+                  placeholder="xyz@example.com"
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-orange-500 focus:outline-none transition-all"
                 />
               </div>
