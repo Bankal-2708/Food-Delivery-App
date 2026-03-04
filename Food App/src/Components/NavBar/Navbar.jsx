@@ -14,7 +14,7 @@ function Navbar() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  // const [searchTerm, setSearchTerm]=useState();
+
 
   const { searchTerm, setSearchTerm } = useContext(CartContext);
 
@@ -102,7 +102,7 @@ function Navbar() {
       </div>
 
       <div>
-        <button className="hover:bg-gray-300 hover:scale-110 transform duration-200 bg-gray-200 font-bold lg:text-xl md:text-lg  shadow-2xl lg:px-5 lg:py-1 md:px-2 md:py-0 rounded-xl cursor-pointer hidden sm:block"
+        <button className="hover:bg-gray-300 hover:scale-[1.2] transform duration-200 bg-gray-200 font-bold lg:text-xl md:text-lg  shadow-2xl lg:px-5 lg:py-1 md:px-2 md:py-0 rounded-xl cursor-pointer hidden sm:block"
           onClick={() => navigate("/authform")}
         >
           Sign In
