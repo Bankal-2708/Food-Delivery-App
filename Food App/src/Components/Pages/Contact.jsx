@@ -1,8 +1,41 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 function Contact() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+ 
+
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    if (name === "" || email === "" || message === "") {
+      alert("name oe email can't be empty");
+      return;
+    }
+
+    // const newEnquiry = {
+    //   name: name,
+    //   email: email,
+    //   message: message
+    // };
+     console.log(name, email, message);
+
+    setName("");
+    setEmail("");
+    setMessage("");
+  }
+  const submitEnter = (event) => {
+  if (event.key === "Enter") {
+    handleSubmit(event);  
+  }
+};
+
+
+
   return (
-    <div className="min-h-screen bg-gray-50 pt-20 pb-12 lg:px-6 flex items-center justify-center">
+    <div className="min-h-screen bg-gray-50 pt-20 pb-12 lg:px-6 flex items-center justify-center" >
       <div className="max-w-5xl mx-auto bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="grid md:grid-cols-2">
 
@@ -31,12 +64,15 @@ function Contact() {
           </div>
 
           <div className="p-10">
-            <form className="space-y-5">
+            <form className="space-y-5" onSubmit={handleSubmit}>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
                 <input
                   type="text"
                   placeholder="Your Name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  onKeyDown={submitEnter}
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-orange-500 focus:outline-none transition-all"
                 />
               </div>
@@ -45,6 +81,9 @@ function Contact() {
                 <input
                   type="email"
                   placeholder="xyz@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  onKeyDown={submitEnter}
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-orange-500 focus:outline-none transition-all"
                 />
               </div>
@@ -53,6 +92,8 @@ function Contact() {
                 <textarea
                   rows="4"
                   placeholder="How can we help you?"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-orange-500 focus:outline-none transition-all"
                 ></textarea>
               </div>
