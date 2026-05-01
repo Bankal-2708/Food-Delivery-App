@@ -17,8 +17,6 @@ export default function Sidenavbar({ onClose }) {
         { id: 4, name: "Contact Us", path: "#contact", to: '/contact' },
     ];
 
-  
-
     return (
 
         <div

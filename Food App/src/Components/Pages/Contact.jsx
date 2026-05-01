@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
+
+const className = "w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-orange-500 focus:outline-none transition-all"
 
 function Contact() {
   const [name, setName] = useState("");
@@ -73,7 +75,7 @@ function Contact() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   onKeyDown={submitEnter}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-orange-500 focus:outline-none transition-all"
+                  className={className}
                 />
               </div>
               <div>
@@ -84,7 +86,7 @@ function Contact() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   onKeyDown={submitEnter}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-orange-500 focus:outline-none transition-all"
+                  className={className}
                 />
               </div>
               <div>
@@ -94,7 +96,7 @@ function Contact() {
                   placeholder="How can we help you?"
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-orange-500 focus:outline-none transition-all"
+                  className={className}
                 ></textarea>
               </div>
               <button className="w-full bg-orange-500 text-white font-bold py-3 rounded-xl hover:bg-orange-600 transition-colors shadow-md">
