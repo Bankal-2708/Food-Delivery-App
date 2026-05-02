@@ -4,13 +4,17 @@ import { CartContext } from './cartContext';
 const API = 'http://localhost:5000/api';
 
 const CartContextProvider = ({ children }) => {
-  const [cart, setCart] = useState([]);
+
+   const [cart, setCart] = useState(() => {
+    return JSON.parse(localStorage.getItem('cart')) || [];
+  });
+
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem('token') || '');
   const [searchTerm, setSearchTerm] = useState('');
   const [debounce, setDebounce] = useState('');
   const debounceTimer = useRef(null);
-  
+
   const skipNextSync = useRef(false);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
 
@@ -27,7 +31,7 @@ const CartContextProvider = ({ children }) => {
     Authorization: `Bearer ${token}`,
   }), [token]);
 
-  useEffect(() => {
+   useEffect(() => {
     const loadData = async () => {
       if (token) {
         const savedUser = JSON.parse(localStorage.getItem('user') || 'null');
@@ -36,10 +40,13 @@ const CartContextProvider = ({ children }) => {
         try {
           const res = await fetch(`${API}/cart`, { headers: authHeaders() });
           const data = await res.json();
+
           if (data.items && data.items.length > 0) {
-            skipNextSync.current = true; 
+             skipNextSync.current = true;
             setCart(data.items);
-          }
+            localStorage.setItem('cart', JSON.stringify(data.items));
+          } 
+         
         } catch (error) {
           console.error('Failed to fetch cart', error);
         }
@@ -52,12 +59,15 @@ const CartContextProvider = ({ children }) => {
     loadData();
   }, [token, authHeaders]);
 
- 
-  useEffect(() => {
+   useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }, [cart]);
+
+   useEffect(() => {
     if (isInitialLoad || !token) return;
 
     if (skipNextSync.current) {
-      skipNextSync.current = false; 
+      skipNextSync.current = false;
       return;
     }
 
@@ -77,8 +87,10 @@ const CartContextProvider = ({ children }) => {
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.message);
+
     localStorage.setItem('token', data.token);
     localStorage.setItem('user', JSON.stringify(data.user));
+
     setToken(data.token);
     setUser(data.user);
     return data;
@@ -92,8 +104,10 @@ const CartContextProvider = ({ children }) => {
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.message);
+
     localStorage.setItem('token', data.token);
     localStorage.setItem('user', JSON.stringify(data.user));
+
     setToken(data.token);
     setUser(data.user);
     return data;
@@ -102,6 +116,8 @@ const CartContextProvider = ({ children }) => {
   const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    localStorage.removeItem('cart'); // ✅ important
+
     setToken('');
     setUser(null);
     setCart([]);
@@ -111,7 +127,9 @@ const CartContextProvider = ({ children }) => {
     setCart((prev) => {
       const exists = prev.find((i) => i.id === item.id);
       if (exists) {
-        return prev.map((i) => i.id === item.id ? { ...i, count: i.count + 1 } : i);
+        return prev.map((i) =>
+          i.id === item.id ? { ...i, count: i.count + 1 } : i
+        );
       }
       return [...prev, { ...item, count: 1 }];
     });
@@ -121,8 +139,11 @@ const CartContextProvider = ({ children }) => {
     setCart((prev) => {
       const exists = prev.find((i) => i.id === itemId);
       if (!exists) return prev;
-      if (exists.count === 1) return prev.filter((i) => i.id !== itemId);
-      return prev.map((i) => i.id === itemId ? { ...i, count: i.count - 1 } : i);
+      if (exists.count === 1)
+        return prev.filter((i) => i.id !== itemId);
+      return prev.map((i) =>
+        i.id === itemId ? { ...i, count: i.count - 1 } : i
+      );
     });
   };
 
