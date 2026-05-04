@@ -12,6 +12,8 @@ import Privacy from "./Components/Pages/Privacy";
 import Delivery from "./Components/Pages/Delivery";
 import About from "./Components/Pages/About";
 import { useEffect } from "react";
+import Payment from "./Components/Pages/Payment";
+import Checkout from "./Components/Pages/Checkout";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -35,6 +37,8 @@ function App() {
           <Route path="/mobile" element={<Mobile />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/payment" element={<Payment />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/delivery" element={<Delivery />} />
           <Route path="/about" element={<About />} />

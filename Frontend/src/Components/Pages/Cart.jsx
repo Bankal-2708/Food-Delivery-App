@@ -2,9 +2,10 @@ import React, { useContext } from "react";
 import { CartContext } from "../../Context/cartContext";
 import minus from "../../assets/minus.png";
 import greenAdd from "../../assets/green_add.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Cart() {
+  const navigate = useNavigate();
   const { cart, addItemToCart, removeItemFromCart, clearCart } = useContext(CartContext);
 
   const filteredItems = cart.filter((item) => item.count > 0);
@@ -83,12 +84,17 @@ function Cart() {
             <p className="text-2xl font-bold text-green-700">${totalPrice}</p>
           </div>
 
-          <button className="w-full bg-orange-500 text-white py-3 rounded-lg font-bold mt-4 hover:bg-orange-600">
+          <button
+            onClick={() => navigate('/checkout', { state: { amount: totalPrice } })}
+            className="w-full bg-orange-500 text-white py-3 rounded-lg font-bold mt-4 hover:bg-orange-600"
+          >
             Proceed to Checkout
           </button>
           <div>
             <Link to='/'>
-              <button className="w-full bg-orange-500 text-white py-3 rounded-lg font-bold mt-4 hover:bg-orange-600">
+              <button
+                onClick={() => navigate('/payment', { state: { amount: totalPrice } })}
+                className="w-full bg-orange-500 text-white py-3 rounded-lg font-bold mt-4 hover:bg-orange-600">
                 Go To Home
               </button>
             </Link>
