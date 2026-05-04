@@ -131,13 +131,20 @@ function Checkout() {
                                 </div>
                             </div>
                         </div>
-
+                        <div>
                         <button 
                             onClick={handlePlaceOrder}
                             className="w-full bg-orange-500 text-white py-4 rounded-xl font-bold text-lg hover:bg-orange-600 transition-all transform hover:scale-[1.02] shadow-xl"
                         >
                             Confirm & Pay Online
                         </button>
+                        <button 
+                            onClick={handlePlaceOrder}
+                            className="w-full bg-orange-500 text-white py-4 rounded-xl font-bold text-lg hover:bg-orange-600 transition-all transform hover:scale-[1.02] shadow-xl mt-2"
+                        >
+                            Confirm & COD
+                        </button>
+                        </div>
                     </div>
                 </div>
             </div>
