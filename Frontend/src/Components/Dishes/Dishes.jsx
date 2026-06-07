@@ -59,7 +59,14 @@ function Dishes({ category }) {
 
   const handleAddItem = (id) => {
     const item = dishes.find((dish) => dish.id === id);
-    if (item) addItemToCart(item);
+    if (item) {
+      // Add mapped image to item before adding to cart
+      const itemWithImage = {
+        ...item,
+        imageSrc: imageMap[item.img]
+      };
+      addItemToCart(itemWithImage);
+    }
   };
 
   const handleRemoveItem = (id) => {
