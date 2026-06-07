@@ -10,8 +10,9 @@ function Cart() {
 
   const filteredItems = cart.filter((item) => item.count > 0);
 
+  // ✅ FIX: parseFloat(String(...)) handles both number and string prices safely
   const totalPrice = filteredItems.reduce((acc, item) => {
-    const price = parseInt(item.price.replace("$", ""));
+    const price = parseFloat(String(item.price).replace("$", "").replace("₹", ""));
     return acc + price * item.count;
   }, 0);
 
@@ -26,11 +27,13 @@ function Cart() {
 
   return (
     <div className="p-8 pt-15 md:pt-30 max-w-4xl mx-auto">
-      <h1 className="text-4xl py-1 font-bold mb-6 w-full  hover:bg-gray-200  rounded-4xl text-center ">Your Shopping Cart</h1>
+      <h1 className="text-4xl py-1 font-bold mb-6 w-full hover:bg-gray-200 rounded-4xl text-center">
+        Your Shopping Cart
+      </h1>
 
       {filteredItems.length === 0 ? (
         <div className="text-center py-10">
-          <p className="text-gray-500 text-2xl ">Your cart is empty!</p>
+          <p className="text-gray-500 text-2xl">Your cart is empty!</p>
           <a href="/" className="text-blue-500 underline mt-4 text-2xl inline-block">
             Go back to menu
           </a>
@@ -50,7 +53,7 @@ function Cart() {
                 />
                 <div>
                   <h2 className="font-semibold text-lg">{item.name}</h2>
-                  <p className="text-gray-600">Price: {item.price}</p>
+                  <p className="text-gray-600">Price: ₹{parseFloat(item.price)}</p>
                 </div>
               </div>
 
@@ -71,9 +74,10 @@ function Cart() {
                   />
                 </div>
 
+                {/* ✅ FIX: same safe conversion for subtotal */}
                 <p className="text-green-600 font-bold mt-2">
-                  Subtotal: $
-                  {parseInt(item.price.replace("$", "")) * item.count}
+                  Subtotal: ₹
+                  {parseFloat(String(item.price).replace("$", "").replace("₹", "")) * item.count}
                 </p>
               </div>
             </div>
@@ -81,7 +85,7 @@ function Cart() {
 
           <div className="mt-8 border-t pt-4 flex justify-between items-center">
             <h2 className="text-2xl font-bold">Total Bill:</h2>
-            <p className="text-2xl font-bold text-green-700">${totalPrice}</p>
+            <p className="text-2xl font-bold text-green-700">₹{totalPrice}</p>
           </div>
 
           <button
@@ -90,16 +94,18 @@ function Cart() {
           >
             Proceed to Checkout
           </button>
+
           <div>
             <Link to='/'>
               <button
-                onClick={() => navigate('/payment', { state: { amount: totalPrice } })}
                 className="w-full bg-orange-500 text-white py-3 rounded-lg font-bold mt-4 hover:bg-orange-600">
                 Go To Home
               </button>
             </Link>
           </div>
-          <button onClick={clearCart}
+
+          <button
+            onClick={clearCart}
             className="w-full bg-orange-500 text-white py-3 rounded-lg font-bold mt-4 hover:bg-orange-600">
             Clear Cart
           </button>

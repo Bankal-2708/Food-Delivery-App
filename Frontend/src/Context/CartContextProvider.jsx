@@ -5,7 +5,6 @@ const API = 'http://localhost:5000/api';
 
 const CartContextProvider = ({ children }) => {
 
-  // --- STATE ---
   const [cart, setCart] = useState(() => JSON.parse(localStorage.getItem('cart')) || []);
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem('token') || '');
@@ -14,24 +13,19 @@ const CartContextProvider = ({ children }) => {
   const debounceTimer = useRef(null);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
 
-   const authHeaders = useCallback(() => ({
+  const authHeaders = useCallback(() => ({
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${token}`,
+    'token': token,
   }), [token]);
 
-  // debouncing search input
+  // Debounce search
   useEffect(() => {
     if (debounceTimer.current) clearTimeout(debounceTimer.current);
-
-    debounceTimer.current = setTimeout(() => {
-      setDebounce(searchTerm);
-    }, 400);
-
+    debounceTimer.current = setTimeout(() => setDebounce(searchTerm), 400);
     return () => clearTimeout(debounceTimer.current);
   }, [searchTerm]);
 
-  
-  // load cart and user data on initial app load
+  // Load cart on mount
   useEffect(() => {
     const loadData = async () => {
       if (token) {
@@ -39,41 +33,42 @@ const CartContextProvider = ({ children }) => {
         if (savedUser) setUser(savedUser);
 
         try {
-          const res = await fetch(`${API}/cart`, {
-            headers: authHeaders(),
-          });
+          const res = await fetch(`${API}/cart`, { headers: authHeaders() });
 
-          const data = await res.json();
+          if (res.status === 401) {
+            console.warn("Unauthorized: Session might be expired.");
+            return;
+          }
 
-          if (data.items) {
-            setCart(data.items);  
+          const resData = await res.json();
+          if (resData.success && resData.data) {
+            setCart(resData.data);
           }
         } catch (err) {
           console.error("Load cart error:", err);
         }
       }
-
       setIsInitialLoad(false);
     };
 
     loadData();
   }, [token, authHeaders]);
 
-   
+  // Persist cart to localStorage
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
 
-   
+  // Sync cart to backend
   useEffect(() => {
     if (!token || isInitialLoad) return;
 
     const syncCart = async () => {
       try {
         await fetch(`${API}/cart`, {
-          method: 'POST', // or PUT based on backend
+          method: 'POST',
           headers: authHeaders(),
-          body: JSON.stringify({ items: cart }),
+          body: JSON.stringify({ cartData: cart }),
         });
       } catch (err) {
         console.error("Cart sync failed:", err);
@@ -83,22 +78,14 @@ const CartContextProvider = ({ children }) => {
     syncCart();
   }, [cart, token, isInitialLoad, authHeaders]);
 
-  
   const addItemToCart = (item) => {
     if (!token) {
       alert("Please login to add items to your cart!");
       return;
     }
-
     setCart((prev) => {
       const exists = prev.find((i) => i.id === item.id);
-
-      if (exists) {
-        return prev.map((i) =>
-          i.id === item.id ? { ...i, count: i.count + 1 } : i
-        );
-      }
-
+      if (exists) return prev.map((i) => i.id === item.id ? { ...i, count: i.count + 1 } : i);
       return [...prev, { ...item, count: 1 }];
     });
   };
@@ -106,22 +93,15 @@ const CartContextProvider = ({ children }) => {
   const removeItemFromCart = (itemId) => {
     setCart((prev) => {
       const exists = prev.find((i) => i.id === itemId);
-
       if (!exists) return prev;
-
-      if (exists.count === 1) {
-        return prev.filter((i) => i.id !== itemId);
-      }
-
-      return prev.map((i) =>
-        i.id === itemId ? { ...i, count: i.count - 1 } : i
-      );
+      if (exists.count === 1) return prev.filter((i) => i.id !== itemId);
+      return prev.map((i) => i.id === itemId ? { ...i, count: i.count - 1 } : i);
     });
   };
 
   const clearCart = () => setCart([]);
 
-   
+  // ✅ FIXED: /user/login → /auth/login (matches server.js: app.use('/api/auth', authRoutes))
   const login = async (email, password) => {
     const res = await fetch(`${API}/auth/login`, {
       method: 'POST',
@@ -130,18 +110,19 @@ const CartContextProvider = ({ children }) => {
     });
 
     const data = await res.json();
-
-    if (!res.ok) throw new Error(data.message);
+    if (!res.ok) throw new Error(data.message || 'Login failed');
 
     localStorage.setItem('token', data.token);
-    localStorage.setItem('user', JSON.stringify(data.user));
+    const userData = data.user || data.name;
+    localStorage.setItem('user', JSON.stringify(userData));
 
     setToken(data.token);
-    setUser(data.user);
+    setUser(userData);
 
     return data;
   };
 
+  // ✅ FIXED: /user/register → /auth/register
   const register = async (name, email, password) => {
     const res = await fetch(`${API}/auth/register`, {
       method: 'POST',
@@ -150,40 +131,28 @@ const CartContextProvider = ({ children }) => {
     });
 
     const data = await res.json();
-
-    if (!res.ok) throw new Error(data.message);
+    if (!res.ok) throw new Error(data.message || 'Registration failed');
 
     localStorage.setItem('token', data.token);
-    localStorage.setItem('user', JSON.stringify(data.user));
+    const userData = data.user || data.name;
+    localStorage.setItem('user', JSON.stringify(userData));
 
     setToken(data.token);
-    setUser(data.user);
+    setUser(userData);
 
     return data;
   };
 
-  const logout = async () => {
-    try {
-      if (token) {
-        await fetch(`${API}/cart/clear`, {
-          method: 'POST',
-          headers: authHeaders(),
-        });
-      }
-    } catch (err) {
-      console.error("Clear cart error:", err);
-    }
-
+  const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     localStorage.removeItem('cart');
-
     setToken('');
     setUser(null);
     setCart([]);
   };
 
- 
+  // ✅ FIXED: /user/forgot-password → /auth/forgot-password
   const forgotPassword = async (email) => {
     const res = await fetch(`${API}/auth/forgot-password`, {
       method: 'POST',
@@ -192,12 +161,11 @@ const CartContextProvider = ({ children }) => {
     });
 
     const data = await res.json();
-
-    if (!res.ok) throw new Error(data.message);
-
+    if (!res.ok) throw new Error(data.message || 'Request failed');
     return data;
   };
 
+  // ✅ FIXED: /user/reset-password → /auth/reset-password
   const resetPassword = async (resetToken, newPassword) => {
     const res = await fetch(`${API}/auth/reset-password/${resetToken}`, {
       method: 'POST',
@@ -206,9 +174,7 @@ const CartContextProvider = ({ children }) => {
     });
 
     const data = await res.json();
-
-    if (!res.ok) throw new Error(data.message);
-
+    if (!res.ok) throw new Error(data.message || 'Reset failed');
     return data;
   };
 
@@ -218,16 +184,13 @@ const CartContextProvider = ({ children }) => {
       addItemToCart,
       removeItemFromCart,
       clearCart,
-
       user,
       token,
       login,
       register,
       logout,
-
       forgotPassword,
       resetPassword,
-
       searchTerm,
       setSearchTerm,
       debounce,

@@ -37,7 +37,7 @@ function ExploreMenu({ category, setCategory }) {
                 md:items-start md:text-left md:mx-0"
       >
         <h1 className="text-4xl font-bold">Explore our menu</h1>
-        <p className="text-xl  ">
+        <p className="text-xl">
           Choose from a diverse meanu featureing a detectable array of dishes.
           Our mission is to satisfy your craving and elevate your dining
           experience, one delicious meal at a time.
@@ -49,7 +49,7 @@ function ExploreMenu({ category, setCategory }) {
             <img
               src={item.img}
               alt={item.name}
-              // className=""
+             
               onClick={() =>
                 setCategory(prev =>
                   prev === item.name ? "All" : item.name
