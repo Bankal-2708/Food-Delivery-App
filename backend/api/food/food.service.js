@@ -1,88 +1,68 @@
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
+import Food from '../../models/Food.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const dataPath = path.join(__dirname, "food.data.js");
-
-// Read food list from the data file (dynamic import workaround using eval-style read)
-let foodList = [];
-
-const loadFoodList = async () => {
+// Get all food items
+export const getAllFoods = async (req, res) => {
   try {
-    const mod = await import(`./food.data.js?update=${Date.now()}`);
-    foodList = mod.foodList || mod.default || [];
-  } catch {
-    foodList = [];
+    const foods = await Food.find();
+    res.json({ success: true, data: foods });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
-await loadFoodList();
-
-// Get all food items
-export const getAllFoods = (req, res) => {
-  res.json({ success: true, data: foodList });
-};
-
 // Add a new food item
-export const addFood = (req, res) => {
-  const { name, description, price, category, image } = req.body;
+export const addFood = async (req, res) => {
+  const { name, description, price, category, imageUrl } = req.body;
 
   if (!name || !price || !category) {
     return res.status(400).json({ success: false, message: "Name, price, and category are required." });
   }
 
-  const newFood = {
-    _id: `food_${Date.now()}`,
-    name,
-    description: description || "",
-    price: Number(price),
-    category,
-    image: image || "default.png",
-  };
+  try {
+    const newFood = new Food({
+      name,
+      description: description || "",
+      price: Number(price),
+      category,
+      imageUrl: imageUrl || null,
+      rating: 4.0,
+      count: 0
+    });
 
-  foodList.push(newFood);
-  saveFoodList();
-  res.status(201).json({ success: true, message: "Food added successfully.", data: newFood });
+    const savedFood = await newFood.save();
+    res.status(201).json({ success: true, message: "Food added successfully.", data: savedFood });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
 };
 
 // Remove a food item by ID
-export const removeFood = (req, res) => {
+export const removeFood = async (req, res) => {
   const { id } = req.params;
-  const index = foodList.findIndex((f) => f._id === id);
 
-  if (index === -1) {
-    return res.status(404).json({ success: false, message: "Food item not found." });
+  try {
+    const removed = await Food.findByIdAndDelete(id);
+    if (!removed) {
+      return res.status(404).json({ success: false, message: "Food item not found." });
+    }
+    res.json({ success: true, message: "Food removed successfully.", data: removed });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
   }
-
-  const removed = foodList.splice(index, 1)[0];
-  saveFoodList();
-  res.json({ success: true, message: "Food removed successfully.", data: removed });
 };
 
 // Update a food item
-export const updateFood = (req, res) => {
+export const updateFood = async (req, res) => {
   const { id } = req.params;
   const updates = req.body;
-  const index = foodList.findIndex((f) => f._id === id);
 
-  if (index === -1) {
-    return res.status(404).json({ success: false, message: "Food item not found." });
-  }
-
-  foodList[index] = { ...foodList[index], ...updates };
-  saveFoodList();
-  res.json({ success: true, message: "Food updated successfully.", data: foodList[index] });
-};
-
-// Persist the foodList back to food.data.js
-const saveFoodList = () => {
-  const content = `export const foodList = ${JSON.stringify(foodList, null, 2)};\n`;
   try {
-    fs.writeFileSync(dataPath, content, "utf-8");
-  } catch (err) {
-    console.error("Failed to save food list:", err);
+    const updated = await Food.findByIdAndUpdate(id, updates, { new: true });
+    if (!updated) {
+      return res.status(404).json({ success: false, message: "Food item not found." });
+    }
+    res.json({ success: true, message: "Food updated successfully.", data: updated });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
   }
 };

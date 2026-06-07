@@ -84,18 +84,19 @@ const CartContextProvider = ({ children }) => {
       return;
     }
     setCart((prev) => {
-      const exists = prev.find((i) => i.id === item.id);
-      if (exists) return prev.map((i) => i.id === item.id ? { ...i, count: i.count + 1 } : i);
+      const itemId = item.id || item._id;
+      const exists = prev.find((i) => (i.id || i._id) === itemId);
+      if (exists) return prev.map((i) => (i.id || i._id) === itemId ? { ...i, count: i.count + 1 } : i);
       return [...prev, { ...item, count: 1 }];
     });
   };
 
   const removeItemFromCart = (itemId) => {
     setCart((prev) => {
-      const exists = prev.find((i) => i.id === itemId);
+      const exists = prev.find((i) => (i.id || i._id) === itemId);
       if (!exists) return prev;
-      if (exists.count === 1) return prev.filter((i) => i.id !== itemId);
-      return prev.map((i) => i.id === itemId ? { ...i, count: i.count - 1 } : i);
+      if (exists.count === 1) return prev.filter((i) => (i.id || i._id) !== itemId);
+      return prev.map((i) => (i.id || i._id) === itemId ? { ...i, count: i.count - 1 } : i);
     });
   };
 
