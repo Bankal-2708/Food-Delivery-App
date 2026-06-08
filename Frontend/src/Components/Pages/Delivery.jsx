@@ -2,8 +2,7 @@ import React from 'react';
 
 function Delivery() {
   return (
-    
-    <div className="min-h-screen bg-gray-50 pt-8 md:pt-24 pb-12 px-6">
+    <div className="w-full min-h-screen bg-gray-50 pt-32 pb-16 px-6 md:px-16">
       <div className="max-w-4xl mx-auto bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-gray-100">
         <h1 className="text-4xl font-bold mb-8 text-gray-800 text-center">Delivery Information</h1>
 

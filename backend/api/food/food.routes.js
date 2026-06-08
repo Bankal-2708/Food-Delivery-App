@@ -18,7 +18,7 @@ router.post("/upload", auth, upload.single('image'), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ success: false, message: "No file uploaded" });
   }
-  
+
   const imageUrl = `/uploads/${req.file.filename}`;
   res.json({ success: true, imageUrl });
 });

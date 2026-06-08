@@ -20,13 +20,11 @@ import About from "./Components/Pages/About";
 
 // Auth & Admin Components
 import LoginForm from "./Components/LoginForm/AuthForm";
-import AdminPanel from "./Components/AdminPanel/AdminPanel";
-import AdminRoute from "./Components/AdminPanel/AdminRoute";
 
 // Context Provider
 import CartProvider from "./Context/CartContextProvider";
 
-// ✅ Scroll to Top logic
+// Scroll to Top logic
 function ScrollToTop() {
   const { pathname } = useLocation();
 
@@ -40,42 +38,31 @@ function ScrollToTop() {
 function App() {
   return (
     <CartProvider>
-      {/* 
-          NOTE: The <Router> was removed from here because it 
-          should only exist once in your main.jsx file. 
-      */}
       <ScrollToTop />
 
-      <div className="m-10">
+      <div className="w-full min-h-screen flex flex-col bg-white">
         <Navbar />
 
-        <Routes>
-          {/* ---- Normal Routes ---- */}
-          <Route path="/" element={<Home />} />
-          <Route path="/menu" element={<Menu />} />
-          <Route path="/sideMenu" element={<Sidenavbar />} />
-          <Route path="/mobile" element={<Mobile />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/checkout" element={<Checkout />} />
-          <Route path="/payment" element={<Payment />} />
-          <Route path="/privacy" element={<Privacy />} />
-          <Route path="/delivery" element={<Delivery />} />
-          <Route path="/about" element={<About />} />
+        {/* Outer content view tracks fluidly across the device layout display viewport */}
+        <div className="w-full flex-grow">
+          <Routes>
+            {/* ---- Normal Routes ---- */}
+            <Route path="/" element={<Home />} />
+            <Route path="/menu" element={<Menu />} />
+            <Route path="/sideMenu" element={<Sidenavbar />} />
+            <Route path="/mobile" element={<Mobile />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/payment" element={<Payment />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/delivery" element={<Delivery />} />
+            <Route path="/about" element={<About />} />
 
-          {/* ---- Auth ---- */}
-          <Route path="/login" element={<LoginForm />} />
-
-          {/* ---- Admin Protected Route ---- */}
-          <Route
-            path="/admin"
-            element={
-              <AdminRoute>
-                <AdminPanel />
-              </AdminRoute>
-            }
-          />
-        </Routes>
+            {/* ---- Auth ---- */}
+            <Route path="/login" element={<LoginForm />} />
+          </Routes>
+        </div>
 
         <Footer />
       </div>

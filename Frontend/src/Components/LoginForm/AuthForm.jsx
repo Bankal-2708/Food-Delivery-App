@@ -28,14 +28,12 @@ const AuthForm = ({ setShowLogin }) => {
       } else {
  
         if (!isResetting) {
-
-           const data = await forgotPassword(form.email);
+          const data = await forgotPassword(form.email);
           setActiveResetToken(data.resetToken);
           setIsResetting(true);  
           setMessage('Email verified. Enter your new password below.');
         } else {
-
-           await resetPassword(activeResetToken, form.password);
+          await resetPassword(activeResetToken, form.password);
           setMessage('Password updated successfully! You can now login.');
           setMode('login');
           setIsResetting(false);
@@ -50,7 +48,7 @@ const AuthForm = ({ setShowLogin }) => {
   };
 
   const formContent = (
-    <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md mx-auto relative">
+    <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md mx-auto relative border border-gray-100">
       {setShowLogin && (
         <button onClick={() => setShowLogin(false)} className="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-2xl font-bold">✕</button>
       )}
@@ -67,7 +65,7 @@ const AuthForm = ({ setShowLogin }) => {
             value={form.name}
             onChange={(e) => setForm({ ...form, name: e.target.value })}
             required
-            className="border border-gray-300 rounded-xl px-4 py-3 text-base focus:ring-2 focus:ring-orange-400"
+            className="border border-gray-300 rounded-xl px-4 py-3 text-base focus:ring-2 focus:ring-orange-400 outline-none"
           />
         )}
         
@@ -78,7 +76,7 @@ const AuthForm = ({ setShowLogin }) => {
             value={form.email}
             onChange={(e) => setForm({ ...form, email: e.target.value })}
             required
-            className="border border-gray-300 rounded-xl px-4 py-3 text-base focus:ring-2 focus:ring-orange-400"
+            className="border border-gray-300 rounded-xl px-4 py-3 text-base focus:ring-2 focus:ring-orange-400 outline-none"
           />
         )}
 
@@ -89,7 +87,7 @@ const AuthForm = ({ setShowLogin }) => {
             value={form.password}
             onChange={(e) => setForm({ ...form, password: e.target.value })}
             required
-            className="border border-gray-300 rounded-xl px-4 py-3 text-base focus:ring-2 focus:ring-orange-400"
+            className="border border-gray-300 rounded-xl px-4 py-3 text-base focus:ring-2 focus:ring-orange-400 outline-none"
           />
         )}
 
@@ -99,7 +97,7 @@ const AuthForm = ({ setShowLogin }) => {
         <button
           type="submit"
           disabled={loading}
-          className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-xl transition-colors text-lg"
+          className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-xl transition-colors text-lg cursor-pointer"
         >
           {loading ? 'Please wait...' : mode === 'login' ? 'Login' : mode === 'register' ? 'Register' : isResetting ? 'Update Password' : 'Verify Email'}
         </button>
@@ -121,9 +119,9 @@ const AuthForm = ({ setShowLogin }) => {
   );
 
   return setShowLogin ? (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={(e) => e.target === e.currentTarget && setShowLogin(false)}>{formContent}</div>
+    <div className="fixed inset-0 z-[100] w-full min-h-screen flex items-center justify-center bg-black/50 backdrop-blur-sm p-4" onClick={(e) => e.target === e.currentTarget && setShowLogin(false)}>{formContent}</div>
   ) : (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-20">{formContent}</div>
+    <div className="w-full min-h-screen flex items-center justify-center bg-gray-50 py-32 px-4">{formContent}</div>
   );
 };
 

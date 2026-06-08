@@ -18,18 +18,15 @@ export default function Sidenavbar({ onClose }) {
     ];
 
     return (
-
         <div
             className="fixed inset-0 bg-black/40 z-40"
             onClick={onClose}
         >
-
             <div
                 className="fixed top-0 left-0 h-screen w-64 bg-white/90 shadow-lg z-50 mx-1 pl-2 py-5
                    rounded-tr-3xl rounded-br-3xl shadow-gray-900"
                 onClick={(e) => e.stopPropagation()}
             >
-
                 <div className='flex justify-between'>
                     <img
                         src={logoimg}
@@ -40,7 +37,7 @@ export default function Sidenavbar({ onClose }) {
                         src={closeMenu}
                         alt=""
                         onClick={onClose}
-                        className='h-17 w-17 object-cover  rounded-4xl cursor-pointer mr-2'
+                        className='h-17 w-17 object-cover rounded-4xl cursor-pointer mr-2'
                     />
                 </div>
 
@@ -49,11 +46,15 @@ export default function Sidenavbar({ onClose }) {
                         {items.map((item) => (
                             <li key={item.id} className='pl-4 '>
                                 {item.path.startsWith("#") && pathname === '/' ? (
-                                    <a href={item.path} className="text-black hover:text-orange-700 font-bold">
+                                    <a 
+                                        href={item.path} 
+                                        onClick={onClose} 
+                                        className="text-black hover:text-orange-700 font-bold"
+                                    >
                                         {item.name}
                                     </a>
                                 ) : (
-                                    <NavLink className={navLinkClass} to={item.to}>
+                                    <NavLink className={navLinkClass} to={item.to} onClick={onClose}>
                                         {item.name}
                                     </NavLink>
                                 )}

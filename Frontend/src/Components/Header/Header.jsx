@@ -3,16 +3,15 @@ import Navbarimg from "../../assets/Navbar.jpg";
 
 function Header() {
   return (
-
-    <div className="relative pt-20">
-      <div className="mt-10 lg:mx-10">
+    <div className="relative w-full pt-20 bg-white">
+       
+      <div className="w-full">
         <img
           src={Navbarimg}
           alt=""
-          className="md:h-170 h-190 w-full object-cover rounded-xl"
+          className="md:h-170 h-190 w-full object-cover"
         />
       </div>
-
 
       <div className="text-white max-w-[50%] absolute md:bottom-20 bottom-10 left-20 md:left-24 flex flex-col gap-1 md:gap-8 items-start animate-[fadeIn_5s_ease-out_forwards]">
         <h1 className="font-bold md:text-7xl leading-tight text-6xl ">

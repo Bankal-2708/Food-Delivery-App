@@ -10,8 +10,7 @@ function Cart() {
 
   const filteredItems = cart.filter((item) => item.count > 0);
 
-  // ✅ FIX: parseFloat(String(...)) handles both number and string prices safely
-  const totalPrice = filteredItems.reduce((acc, item) => {
+   const totalPrice = filteredItems.reduce((acc, item) => {
     const price = parseFloat(String(item.price).replace("$", "").replace("₹", ""));
     return acc + price * item.count;
   }, 0);
@@ -26,91 +25,93 @@ function Cart() {
   };
 
   return (
-    <div className="p-8 pt-15 md:pt-30 max-w-4xl mx-auto">
-      <h1 className="text-4xl py-1 font-bold mb-6 w-full hover:bg-gray-200 rounded-4xl text-center">
-        Your Shopping Cart
-      </h1>
+    <div className="w-full min-h-screen bg-white pt-32 pb-16 px-6 md:px-16">
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-4xl py-1 font-bold mb-6 w-full text-center">
+          Your Shopping Cart
+        </h1>
 
-      {filteredItems.length === 0 ? (
-        <div className="text-center py-10">
-          <p className="text-gray-500 text-2xl">Your cart is empty!</p>
-          <a href="/" className="text-blue-500 underline mt-4 text-2xl inline-block">
-            Go back to menu
-          </a>
-        </div>
-      ) : (
-        <div className="space-y-4">
-          {filteredItems.map((item) => (
-            <div
-              key={item.id}
-              className="flex items-center justify-between border-b pb-4"
-            >
-              <div className="flex items-center gap-4">
-                <img
-                  src={item.imageUrl ? `http://localhost:5000${item.imageUrl}` : 'https://via.placeholder.com/80'}
-                  alt={item.name}
-                  className="w-20 h-20 object-cover rounded"
-                />
-                <div>
-                  <h2 className="font-semibold text-lg">{item.name}</h2>
-                  <p className="text-gray-600">Price: ₹{parseFloat(item.price)}</p>
-                </div>
-              </div>
-
-              <div className="text-right">
+        {filteredItems.length === 0 ? (
+          <div className="text-center py-10">
+            <p className="text-gray-500 text-2xl">Your cart is empty!</p>
+            <a href="/" className="text-blue-500 underline mt-4 text-2xl inline-block">
+              Go back to menu
+            </a>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {filteredItems.map((item) => (
+              <div
+                key={item.id}
+                className="flex items-center justify-between border-b pb-4 bg-white"
+              >
                 <div className="flex items-center gap-4">
                   <img
-                    src={minus}
-                    alt="Remove"
-                    className="h-5 w-5 cursor-pointer"
-                    onClick={() => handleRemoveItem(item.id)}
+                    src={item.imageSrc || item.img}
+                    alt={item.name}
+                    className="w-20 h-20 object-cover rounded"
                   />
-                  <p className="font-bold text-lg">{item.count}</p>
-                  <img
-                    src={greenAdd}
-                    alt="Add"
-                    className="h-5 w-5 cursor-pointer"
-                    onClick={() => handleAddItem(item.id)}
-                  />
+                  <div>
+                    <h2 className="font-semibold text-lg text-gray-800">{item.name}</h2>
+                    <p className="text-gray-600">Price: ₹{parseFloat(item.price)}</p>
+                  </div>
                 </div>
 
-                {/* ✅ FIX: same safe conversion for subtotal */}
-                <p className="text-green-600 font-bold mt-2">
-                  Subtotal: ₹
-                  {parseFloat(String(item.price).replace("$", "").replace("₹", "")) * item.count}
-                </p>
+                <div className="text-right">
+                  <div className="flex items-center gap-4 justify-end">
+                    <img
+                      src={minus}
+                      alt="Remove"
+                      className="h-5 w-5 cursor-pointer"
+                      onClick={() => handleRemoveItem(item.id)}
+                    />
+                    <p className="font-bold text-lg text-gray-800">{item.count}</p>
+                    <img
+                      src={greenAdd}
+                      alt="Add"
+                      className="h-5 w-5 cursor-pointer"
+                      onClick={() => handleAddItem(item.id)}
+                    />
+                  </div>
+
+                   <p className="text-green-600 font-bold mt-2">
+                    Subtotal: ₹
+                    {parseFloat(String(item.price).replace("$", "").replace("₹", "")) * item.count}
+                  </p>
+                </div>
               </div>
+            ))}
+
+            <div className="mt-8 border-t pt-4 flex justify-between items-center">
+              <h2 className="text-2xl font-bold text-gray-700">Total Bill:</h2>
+              <p className="text-2xl font-bold text-green-700">₹{totalPrice}</p>
             </div>
-          ))}
 
-          <div className="mt-8 border-t pt-4 flex justify-between items-center">
-            <h2 className="text-2xl font-bold">Total Bill:</h2>
-            <p className="text-2xl font-bold text-green-700">₹{totalPrice}</p>
+            <button
+              onClick={() => navigate('/checkout', { state: { amount: totalPrice } })}
+              className="w-full bg-orange-500 text-white py-3 rounded-lg font-bold mt-4 hover:bg-orange-600 cursor-pointer text-center block"
+            >
+              Proceed to Checkout
+            </button>
+
+            <div>
+              <Link to='/'>
+                <button
+                  className="w-full bg-orange-500 text-white py-3 rounded-lg font-bold mt-4 hover:bg-orange-600 cursor-pointer">
+                  Go To Home
+                </button>
+              </Link>
+            </div>
+
+            <button
+              onClick={clearCart}
+              className="w-full bg-orange-500 text-white py-3 rounded-lg font-bold mt-4 hover:bg-orange-600 cursor-pointer"
+            >
+              Clear Cart
+            </button>
           </div>
-
-          <button
-            onClick={() => navigate('/checkout', { state: { amount: totalPrice } })}
-            className="w-full bg-orange-500 text-white py-3 rounded-lg font-bold mt-4 hover:bg-orange-600"
-          >
-            Proceed to Checkout
-          </button>
-
-          <div>
-            <Link to='/'>
-              <button
-                className="w-full bg-orange-500 text-white py-3 rounded-lg font-bold mt-4 hover:bg-orange-600">
-                Go To Home
-              </button>
-            </Link>
-          </div>
-
-          <button
-            onClick={clearCart}
-            className="w-full bg-orange-500 text-white py-3 rounded-lg font-bold mt-4 hover:bg-orange-600">
-            Clear Cart
-          </button>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
