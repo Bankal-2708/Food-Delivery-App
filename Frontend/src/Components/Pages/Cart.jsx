@@ -10,14 +10,14 @@ function Cart() {
 
   const filteredItems = cart.filter((item) => item.count > 0);
 
-   const totalPrice = filteredItems.reduce((acc, item) => {
+  const totalPrice = filteredItems.reduce((acc, item) => {
     const price = parseFloat(String(item.price).replace("$", "").replace("₹", ""));
     return acc + price * item.count;
   }, 0);
 
   const handleAddItem = (id) => {
-    const item = cart.find((dish) => dish.id === id);
-    addItemToCart(item);
+    const item = cart.find((dish) => (dish._id || dish.id) === id);
+    if (item) addItemToCart(item);
   };
 
   const handleRemoveItem = (id) => {
@@ -34,22 +34,22 @@ function Cart() {
         {filteredItems.length === 0 ? (
           <div className="text-center py-10">
             <p className="text-gray-500 text-2xl">Your cart is empty!</p>
-            <a href="/" className="text-blue-500 underline mt-4 text-2xl inline-block">
+            <Link to="/" className="text-blue-500 underline mt-4 text-2xl inline-block">
               Go back to menu
-            </a>
+            </Link>
           </div>
         ) : (
           <div className="space-y-4">
             {filteredItems.map((item) => (
               <div
-                key={item.id}
+                key={item._id || item.id}
                 className="flex items-center justify-between border-b pb-4 bg-white"
               >
                 <div className="flex items-center gap-4">
                   <img
-                    src={item.imageSrc || item.img}
+                    src={item.imageSrc || item.image}
                     alt={item.name}
-                    className="w-20 h-20 object-cover rounded"
+                    className="w-20 h-20 object-cover rounded-xl"
                   />
                   <div>
                     <h2 className="font-semibold text-lg text-gray-800">{item.name}</h2>
@@ -62,19 +62,19 @@ function Cart() {
                     <img
                       src={minus}
                       alt="Remove"
-                      className="h-5 w-5 cursor-pointer"
-                      onClick={() => handleRemoveItem(item.id)}
+                      className="h-5 w-5 cursor-pointer select-none"
+                      onClick={() => handleRemoveItem(item._id || item.id)}
                     />
-                    <p className="font-bold text-lg text-gray-800">{item.count}</p>
+                    <p className="font-bold text-lg text-gray-800 select-none">{item.count}</p>
                     <img
                       src={greenAdd}
                       alt="Add"
-                      className="h-5 w-5 cursor-pointer"
-                      onClick={() => handleAddItem(item.id)}
+                      className="h-5 w-5 cursor-pointer select-none"
+                      onClick={() => handleAddItem(item._id || item.id)}
                     />
                   </div>
 
-                   <p className="text-green-600 font-bold mt-2">
+                  <p className="text-green-600 font-bold mt-2">
                     Subtotal: ₹
                     {parseFloat(String(item.price).replace("$", "").replace("₹", "")) * item.count}
                   </p>
@@ -105,7 +105,7 @@ function Cart() {
 
             <button
               onClick={clearCart}
-              className="w-full bg-orange-500 text-white py-3 rounded-lg font-bold mt-4 hover:bg-orange-600 cursor-pointer"
+              className="w-full bg-gray-200 text-gray-700 py-3 rounded-lg font-bold mt-4 hover:bg-gray-300 cursor-pointer"
             >
               Clear Cart
             </button>

@@ -7,9 +7,9 @@ const router = express.Router();
  router.get('/', protect, async (req, res) => {
   try {
     const cart = await Cart.findOne({ userId: req.user.id });
-    res.json({ items: cart ? cart.items : [] });
+    res.json({ success: true, data: cart ? cart.items : [] });
   } catch {
-    res.status(500).json({ message: "Server Error" });
+    res.status(500).json({ success: false, message: "Server Error" });
   }
 });
 
