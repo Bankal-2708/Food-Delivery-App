@@ -16,7 +16,6 @@
   background: #444;
 }
 
-/* Input focus states */
 input:focus,
 textarea:focus,
 select:focus {
