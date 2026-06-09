@@ -20,21 +20,21 @@ import add from "../../assets/add.png";
 import greenAdd from "../../assets/green_add.png";
 import minus from "../../assets/minus.png";
 
-const imageMap = {
-  "Pizza.jpeg": Pizza,
-  "Dosa.jpeg": Dosa,
-  "Momos.jpeg": Momos,
-  "Panner_Nan.jpeg": Panner_Nan,
-  "Panner_Tikka.jpeg": Panner_Tikka,
-  "Pav_Bhaji.jpeg": Pav_Bhaji,
-  "Rajma_Rice.jpeg": Rajma_Rice,
-  "Sandwich.jpeg": Sandwich,
-  "Burgur.jpeg": Burgur,
-  "Chola_bhutara.jpeg": Chola_Bhutura,
-  "Egg_Biryani.jpeg": Egg_Biryani,
-  "Mix_Momo.jpeg": Mix_Momo,
-  "Pasta.jpeg": Pasta,
-  "Rice_Kheer.jpeg": Rice_Kheer,
+ const nameImageMap = {
+  "Pizza": Pizza,
+  "Dosa": Dosa,
+  "Momos": Momos,
+  "Paneer Nan": Panner_Nan,
+  "Paneer Tikka": Panner_Tikka,
+  "Pav Bhaji": Pav_Bhaji,
+  "Rajma Rice": Rajma_Rice,
+  "Sandwich": Sandwich,
+  "Burger": Burgur,
+  "Chole Bhature": Chola_Bhutura,
+  "Egg Biryani": Egg_Biryani,
+  "Mix Momos": Mix_Momo,
+  "Pasta": Pasta,
+  "Rice Kheer": Rice_Kheer,
 };
 
 function Dishes({ category }) {
@@ -57,9 +57,13 @@ function Dishes({ category }) {
   const handleAddItem = (_id) => {
     const item = dishes.find((dish) => dish._id === _id);
     if (item) {
+       const resolvedImg = item.imageUrl 
+        ? `http://localhost:5000${item.imageUrl}` 
+        : nameImageMap[item.name];
+
       const itemWithImage = {
         ...item,
-        imageSrc: imageMap[item.img]
+        imageSrc: resolvedImg
       };
       addItemToCart(itemWithImage);
     }
@@ -85,6 +89,11 @@ function Dishes({ category }) {
         {filteredDishes.map((dish) => {
           const cartItem = Array.isArray(cart) ? cart.find((item) => (item._id || item.id) === dish._id) : null;
 
+          // ✅ FIXED: Check if dynamic admin imageUrl path exists, otherwise fall back to matching by name
+          const finalImageSource = dish.imageUrl 
+            ? `http://localhost:5000${dish.imageUrl}` 
+            : nameImageMap[dish.name];
+
           return (
             <div
               key={dish._id}
@@ -92,7 +101,7 @@ function Dishes({ category }) {
             >
               <div>
                 <img
-                  src={imageMap[dish.img]} 
+                  src={finalImageSource} 
                   alt={dish.name}
                   className="h-40 w-full object-cover rounded-2xl mt-2"
                 />
