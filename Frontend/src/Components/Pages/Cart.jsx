@@ -133,7 +133,7 @@ function Cart() {
 
             <button
               onClick={() => navigate('/checkout', { state: { amount: totalPrice } })}
-              className="w-full bg-orange-500 text-white py-3 rounded-lg font-bold mt-4 hover:bg-orange-600 cursor-pointer text-center block"
+              className="w-full bg-orange-500 text-white py-3 rounded-lg font-bold mt-4 hover:bg-orange-600 hover:scale-105 transition-transform duration-300 cursor-pointer text-center block"
             >
               Proceed to Checkout
             </button>
@@ -141,7 +141,7 @@ function Cart() {
             <div>
               <Link to='/'>
                 <button
-                  className="w-full bg-orange-500 text-white py-3 rounded-lg font-bold mt-4 hover:bg-orange-600 cursor-pointer">
+                  className="w-full bg-orange-500 text-white py-3 rounded-lg font-bold mt-4 hover:bg-orange-600 hover:scale-105 transition-transform duration-300 cursor-pointer text-center block">
                   Go To Home
                 </button>
               </Link>
@@ -149,7 +149,7 @@ function Cart() {
 
             <button
               onClick={clearCart}
-              className="w-full bg-gray-200 text-gray-700 py-3 rounded-lg font-bold mt-4 hover:bg-gray-300 cursor-pointer"
+              className="w-full bg-orange-500 text-white py-3 rounded-lg font-bold mt-4 hover:bg-grorangeeen-600 hover:scale-105 transition-transform duration-300 cursor-pointer text-center block"
             >
               Clear Cart
             </button>
