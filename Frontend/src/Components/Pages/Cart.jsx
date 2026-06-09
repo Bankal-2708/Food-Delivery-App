@@ -4,6 +4,39 @@ import minus from "../../assets/minus.png";
 import greenAdd from "../../assets/green_add.png";
 import { Link, useNavigate } from "react-router-dom";
 
+// Local static image assets mapping
+import Pizza from "../../assets/Pizza_1.jpeg";
+import Dosa from "../../assets/Dosa.jpeg";
+import Momos from "../../assets/Momos_1.jpeg";
+import Panner_Nan from "../../assets/Panner_Nan.jpeg";
+import Panner_Tikka from "../../assets/Panner_Tikka.jpeg";
+import Pav_Bhaji from "../../assets/Pav_Bhaji.jpeg";
+import Rajma_Rice from "../../assets/Rajma_Rice.jpeg";
+import Sandwich from "../../assets/Sandwich.jpeg";
+import Burgur from "../../assets/Burgur_1.jpeg";
+import Chola_Bhutura from "../../assets/Chola_bhutara.jpeg";
+import Egg_Biryani from "../../assets/Egg_Biryani.jpeg";
+import Mix_Momo from "../../assets/Mix_Momo.jpeg";
+import Pasta from "../../assets/Paasta.jpeg";
+import Rice_Kheer from "../../assets/Rice_Kheer.jpeg";
+
+const nameImageMap = {
+  "Pizza": Pizza,
+  "Dosa": Dosa,
+  "Momos": Momos,
+  "Paneer Nan": Panner_Nan,
+  "Paneer Tikka": Panner_Tikka,
+  "Pav Bhaji": Pav_Bhaji,
+  "Rajma Rice": Rajma_Rice,
+  "Sandwich": Sandwich,
+  "Burger": Burgur,
+  "Chole Bhature": Chola_Bhutura,
+  "Egg Biryani": Egg_Biryani,
+  "Mix Momos": Mix_Momo,
+  "Pasta": Pasta,
+  "Rice Kheer": Rice_Kheer,
+};
+
 function Cart() {
   const navigate = useNavigate();
   const { cart, addItemToCart, removeItemFromCart, clearCart } = useContext(CartContext);
@@ -17,7 +50,13 @@ function Cart() {
 
   const handleAddItem = (id) => {
     const item = cart.find((dish) => (dish._id || dish.id) === id);
-    if (item) addItemToCart(item);
+    if (item) {
+      const preservedItem = {
+        ...item,
+        img: item.img || item.imageSrc
+      };
+      addItemToCart(preservedItem);
+    }
   };
 
   const handleRemoveItem = (id) => {
@@ -25,7 +64,7 @@ function Cart() {
   };
 
   return (
-    <div className="w-full min-h-screen bg-white pt-32 pb-16 px-6 md:px-16">
+    <div className="w-full min-h-screen bg-white pt-39 pb-16 px-6 md:px-16">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-4xl py-1 font-bold mb-6 w-full text-center">
           Your Shopping Cart
@@ -40,47 +79,52 @@ function Cart() {
           </div>
         ) : (
           <div className="space-y-4">
-            {filteredItems.map((item) => (
-              <div
-                key={item._id || item.id}
-                className="flex items-center justify-between border-b pb-4 bg-white"
-              >
-                <div className="flex items-center gap-4">
-                  <img
-                    src={item.imageSrc || item.image}
-                    alt={item.name}
-                    className="w-20 h-20 object-cover rounded-xl"
-                  />
-                  <div>
-                    <h2 className="font-semibold text-lg text-gray-800">{item.name}</h2>
-                    <p className="text-gray-600">Price: ₹{parseFloat(item.price)}</p>
-                  </div>
-                </div>
+            {filteredItems.map((item) => {
+              // ✅ FIXED: Comprehensive image resolution strategy to prevent broken links on local storage refreshes
+              const currentImageSource = item.imageSrc || item.image || nameImageMap[item.name] || (item.imageUrl ? `http://localhost:5000${item.imageUrl}` : "");
 
-                <div className="text-right">
-                  <div className="flex items-center gap-4 justify-end">
+              return (
+                <div
+                  key={item._id || item.id}
+                  className="flex items-center justify-between border-b pb-4 bg-white"
+                >
+                  <div className="flex items-center gap-4">
                     <img
-                      src={minus}
-                      alt="Remove"
-                      className="h-5 w-5 cursor-pointer select-none"
-                      onClick={() => handleRemoveItem(item._id || item.id)}
+                      src={currentImageSource}
+                      alt={item.name}
+                      className="w-20 h-20 object-cover rounded-xl"
                     />
-                    <p className="font-bold text-lg text-gray-800 select-none">{item.count}</p>
-                    <img
-                      src={greenAdd}
-                      alt="Add"
-                      className="h-5 w-5 cursor-pointer select-none"
-                      onClick={() => handleAddItem(item._id || item.id)}
-                    />
+                    <div>
+                      <h2 className="font-semibold text-lg text-gray-800">{item.name}</h2>
+                      <p className="text-gray-600">Price: ₹{parseFloat(item.price)}</p>
+                    </div>
                   </div>
 
-                  <p className="text-green-600 font-bold mt-2">
-                    Subtotal: ₹
-                    {parseFloat(String(item.price).replace("$", "").replace("₹", "")) * item.count}
-                  </p>
+                  <div className="text-right">
+                    <div className="flex items-center gap-4 justify-end">
+                      <img
+                        src={minus}
+                        alt="Remove"
+                        className="h-5 w-5 cursor-pointer select-none"
+                        onClick={() => handleRemoveItem(item._id || item.id)}
+                      />
+                      <p className="font-bold text-lg text-gray-800 select-none">{item.count}</p>
+                      <img
+                        src={greenAdd}
+                        alt="Add"
+                        className="h-5 w-5 cursor-pointer select-none"
+                        onClick={() => handleAddItem(item._id || item.id)}
+                      />
+                    </div>
+
+                    <p className="text-green-600 font-bold mt-2">
+                      Subtotal: ₹
+                      {parseFloat(String(item.price).replace("$", "").replace("₹", "")) * item.count}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
 
             <div className="mt-8 border-t pt-4 flex justify-between items-center">
               <h2 className="text-2xl font-bold text-gray-700">Total Bill:</h2>
