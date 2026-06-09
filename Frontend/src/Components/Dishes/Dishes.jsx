@@ -83,9 +83,7 @@ function Dishes({ category }) {
       <div className="mb-8">
         <h1 className="font-bold text-3xl text-gray-900">Top dishes near you</h1>
       </div>
-
-      {/* ✅ FIXED: Using the full filteredDishes array inside your max-height scrollable window */}
-      <div className="max-h-[75vh] overflow-y-auto pr-2 scrollbar-none style-scroll">
+       <div className="max-h-[75vh] overflow-y-auto pr-2 scrollbar-none style-scroll">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pb-5">
           {filteredDishes.map((dish) => {
             const cartItem = Array.isArray(cart) ? cart.find((item) => (item._id || item.id) === dish._id) : null;
