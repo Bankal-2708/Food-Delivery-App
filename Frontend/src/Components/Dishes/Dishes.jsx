@@ -41,7 +41,7 @@ function Dishes({ category }) {
   const [dishes, setDishes] = useState([]);
 
   useEffect(() => {
-    fetch("https://food-backend-rouge.vercel.app/api/food")
+    fetch("https://food-backend-git-main-bankal2708s-projects.vercel.app/api/food")
       .then((res) => res.json())
       .then((res) => {
         if (res.success && Array.isArray(res.data)) {
@@ -56,9 +56,9 @@ function Dishes({ category }) {
   const handleAddItem = (_id) => {
     const item = dishes.find((dish) => dish._id === _id);
     if (item) {
-      const resolvedImg = item.imageUrl
-        ? `https://food-backend-rouge.vercel.app${item.imageUrl}`
-        : nameImageMap[item.name];
+const resolvedImg = item.imageUrl
+         ? `https://food-backend-git-main-bankal2708s-projects.vercel.app${item.imageUrl}`
+         : nameImageMap[item.name];
 
       const itemWithImage = {
         ...item,
@@ -88,7 +88,7 @@ function Dishes({ category }) {
           {filteredDishes.map((dish) => {
             const cartItem = Array.isArray(cart) ? cart.find((item) => (item._id || item.id) === dish._id) : null;
             const finalImageSource = dish.imageUrl
-              ? `https://food-backend-rouge.vercel.app${dish.imageUrl}`
+              ? `https://food-backend-git-main-bankal2708s-projects.vercel.app${dish.imageUrl}`
               : nameImageMap[dish.name];
 
             return (
@@ -97,9 +97,12 @@ function Dishes({ category }) {
                 className="border border-gray-300 rounded-lg p-3 shadow hover:shadow-2xl transition-all duration-300 hover:scale-110 bg-white flex flex-col justify-between"
               >
                 <div>
-                  <img
-                    src={finalImageSource}
-                    alt={dish.name}
+<img
+                         src={dish.imageUrl
+                           ? `https://food-backend-git-main-bankal2708s-projects.vercel.app${dish.imageUrl}`
+                           : nameImageMap[dish.name]
+                         }
+                         alt={dish.name}
                     className="h-40 w-full object-cover rounded-2xl mt-2"
                   />
                   <h3 className="mt-2 font-semibold text-gray-800">{dish.name}</h3>

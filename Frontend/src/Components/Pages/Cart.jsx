@@ -81,7 +81,7 @@ function Cart() {
           <div className="space-y-4">
             {filteredItems.map((item) => {
               
-              const currentImageSource = item.imageSrc || item.image || nameImageMap[item.name] || (item.imageUrl ? `https://food-backend-rouge.vercel.app${item.imageUrl}` : "");
+              const currentImageSource = item.imageSrc || item.image || nameImageMap[item.name] || (item.imageUrl ? `https://food-backend-git-main-bankal2708s-projects.vercel.app${item.imageUrl}` : "");
 
               return (
                 <div

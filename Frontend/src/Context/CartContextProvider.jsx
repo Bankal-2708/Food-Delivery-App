@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { CartContext } from './cartContext';
 
-const API = 'https://food-backend-rouge.vercel.app/api';
+const API = 'https://food-backend-git-main-bankal2708s-projects.vercel.app/api';
 
 const CartContextProvider = ({ children }) => {
 
