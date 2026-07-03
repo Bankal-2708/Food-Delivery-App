@@ -41,7 +41,7 @@ function Dishes({ category }) {
   const [dishes, setDishes] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/food")
+    fetch("https://food-backend-rouge.vercel.app/api/food")
       .then((res) => res.json())
       .then((res) => {
         if (res.success && Array.isArray(res.data)) {
@@ -57,7 +57,7 @@ function Dishes({ category }) {
     const item = dishes.find((dish) => dish._id === _id);
     if (item) {
       const resolvedImg = item.imageUrl
-        ? `http://localhost:5000${item.imageUrl}`
+        ? `https://food-backend-rouge.vercel.app${item.imageUrl}`
         : nameImageMap[item.name];
 
       const itemWithImage = {
@@ -88,7 +88,7 @@ function Dishes({ category }) {
           {filteredDishes.map((dish) => {
             const cartItem = Array.isArray(cart) ? cart.find((item) => (item._id || item.id) === dish._id) : null;
             const finalImageSource = dish.imageUrl
-              ? `http://localhost:5000${dish.imageUrl}`
+              ? `https://food-backend-rouge.vercel.app${dish.imageUrl}`
               : nameImageMap[dish.name];
 
             return (

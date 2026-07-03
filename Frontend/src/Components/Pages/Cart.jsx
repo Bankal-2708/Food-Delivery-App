@@ -4,7 +4,7 @@ import minus from "../../assets/minus.png";
 import greenAdd from "../../assets/green_add.png";
 import { Link, useNavigate } from "react-router-dom";
 
-// Local static image assets mapping
+ 
 import Pizza from "../../assets/Pizza_1.jpeg";
 import Dosa from "../../assets/Dosa.jpeg";
 import Momos from "../../assets/Momos_1.jpeg";
@@ -80,8 +80,8 @@ function Cart() {
         ) : (
           <div className="space-y-4">
             {filteredItems.map((item) => {
-              // ✅ FIXED: Comprehensive image resolution strategy to prevent broken links on local storage refreshes
-              const currentImageSource = item.imageSrc || item.image || nameImageMap[item.name] || (item.imageUrl ? `http://localhost:5000${item.imageUrl}` : "");
+              
+              const currentImageSource = item.imageSrc || item.image || nameImageMap[item.name] || (item.imageUrl ? `https://food-backend-rouge.vercel.app${item.imageUrl}` : "");
 
               return (
                 <div

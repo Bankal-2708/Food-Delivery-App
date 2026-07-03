@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { CartContext } from './cartContext';
 
-const API = 'http://localhost:5000/api';
+const API = 'https://food-backend-rouge.vercel.app/api';
 
 const CartContextProvider = ({ children }) => {
 
@@ -25,7 +25,7 @@ const CartContextProvider = ({ children }) => {
     return () => clearTimeout(debounceTimer.current);
   }, [searchTerm]);
 
-   useEffect(() => {
+  useEffect(() => {
     const loadData = async () => {
       if (token) {
         const savedUser = JSON.parse(localStorage.getItem('user') || 'null');
@@ -53,11 +53,11 @@ const CartContextProvider = ({ children }) => {
     loadData();
   }, [token, authHeaders]);
 
-   useEffect(() => {
+  useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
 
-   useEffect(() => {
+  useEffect(() => {
     if (!token || isInitialLoad) return;
 
     const syncCart = async () => {
@@ -100,7 +100,7 @@ const CartContextProvider = ({ children }) => {
 
   const clearCart = () => setCart([]);
 
-   const login = async (email, password) => {
+  const login = async (email, password) => {
     const res = await fetch(`${API}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -120,7 +120,7 @@ const CartContextProvider = ({ children }) => {
     return data;
   };
 
-   const register = async (name, email, password) => {
+  const register = async (name, email, password) => {
     const res = await fetch(`${API}/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -149,7 +149,7 @@ const CartContextProvider = ({ children }) => {
     setCart([]);
   };
 
-   const forgotPassword = async (email) => {
+  const forgotPassword = async (email) => {
     const res = await fetch(`${API}/auth/forgot-password`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -161,7 +161,7 @@ const CartContextProvider = ({ children }) => {
     return data;
   };
 
-   const resetPassword = async (resetToken, newPassword) => {
+  const resetPassword = async (resetToken, newPassword) => {
     const res = await fetch(`${API}/auth/reset-password/${resetToken}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
