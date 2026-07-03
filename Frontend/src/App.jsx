@@ -1,13 +1,11 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 
-// Layout & UI Components
-import Navbar from "./Components/NavBar/Navbar";
+ import Navbar from "./Components/NavBar/Navbar";
 import Footer from "./Components/Footer/Footer";
 import Sidenavbar from "./Components/NavBar/Sidenavbar";
 
-// Page Components
-import Home from "./Components/Pages/Home";
+ import Home from "./Components/Pages/Home";
 import Menu from "./Components/Pages/Menu";
 import Contact from "./Components/Pages/Contact";
 import Mobile from "./Components/Pages/Mobile";
@@ -43,10 +41,9 @@ function App() {
       <div className="w-full min-h-screen flex flex-col bg-white">
         <Navbar />
 
-        {/* Outer content view tracks fluidly across the device layout display viewport */}
-        <div className="w-full flex-grow">
+         <div className="w-full  grow">
           <Routes>
-            {/* ---- Normal Routes ---- */}
+             
             <Route path="/" element={<Home />} />
             <Route path="/menu" element={<Menu />} />
             <Route path="/sideMenu" element={<Sidenavbar />} />
@@ -59,7 +56,7 @@ function App() {
             <Route path="/delivery" element={<Delivery />} />
             <Route path="/about" element={<About />} />
 
-            {/* ---- Auth ---- */}
+             
             <Route path="/login" element={<LoginForm />} />
           </Routes>
         </div>
