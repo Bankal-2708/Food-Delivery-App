@@ -30,7 +30,11 @@ function Navbar() {
     <>
       <nav
         id="home"
+<<<<<<< HEAD
         className="fixed top-0 left-0 w-full bg-white shadow-md z-50 flex justify-between items-center px-6 md:px-16 py-3"
+=======
+        className="fixed top-0 left-0 w-full bg-white shadow-md z-50 flex justify-between items-center px-10 py-3"
+>>>>>>> 7dbdd5acc13454d943579490d8e995784acb0281
       >
         <div className="hidden sm:block">
           <img
