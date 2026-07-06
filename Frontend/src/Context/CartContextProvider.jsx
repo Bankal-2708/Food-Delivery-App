@@ -3,7 +3,46 @@ import { CartContext } from './cartContext';
 
 // Use Vite environment variable for the backend URL when available.
 // Create a local .env file with VITE_API_URL if you want to run on other devices.
-const API = import.meta.env.VITE_API_URL || 'https://food-backend-rouge.vercel.app/api';
+const normalizeApiBase = (value) => {
+  if (!value) return 'https://food-backend-rouge.vercel.app/api';
+
+  const trimmed = value.trim().replace(/\/+$/, '');
+  if (!trimmed) return 'https://food-backend-rouge.vercel.app/api';
+
+  if (trimmed.startsWith('/')) return trimmed;
+  if (trimmed.endsWith('/api')) return trimmed;
+
+  return `${trimmed}/api`;
+};
+
+const API = normalizeApiBase(import.meta.env.VITE_API_URL || 'https://food-backend-rouge.vercel.app/api');
+
+const buildApiUrl = (path) => {
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  return `${API}${cleanPath}`;
+};
+
+const requestJson = async (url, options = {}) => {
+  const res = await fetch(url, {
+    headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
+    ...options,
+  });
+
+  const text = await res.text();
+  let data = null;
+
+  try {
+    data = text ? JSON.parse(text) : null;
+  } catch {
+    data = { message: text || 'Request failed' };
+  }
+
+  if (!res.ok) {
+    throw new Error(data?.message || data?.error || 'Request failed');
+  }
+
+  return data;
+};
 
 const CartContextProvider = ({ children }) => {
   const [cart, setCart] = useState(() => JSON.parse(localStorage.getItem('cart')) || []);
@@ -78,18 +117,28 @@ const CartContextProvider = ({ children }) => {
     syncCart();
   }, [cart, token, isInitialLoad, authHeaders]);
 
+  const getItemKey = (itemOrId) => {
+    if (!itemOrId) return null;
+    if (typeof itemOrId === 'object') {
+      return itemOrId._id || itemOrId.id || null;
+    }
+    return itemOrId;
+  };
+
   const addItemToCart = (item) => {
     if (!token) {
       alert('Please login to add items to your cart!');
       return;
     }
 
+    const itemKey = getItemKey(item);
+
     setCart((prev) => {
-      const exists = prev.find((i) => i.id === item.id);
+      const exists = prev.find((i) => getItemKey(i) === itemKey);
 
       if (exists) {
         return prev.map((i) =>
-          i.id === item.id ? { ...i, count: i.count + 1 } : i
+          getItemKey(i) === itemKey ? { ...i, count: (i.count || 0) + 1 } : i
         );
       }
 
@@ -98,17 +147,19 @@ const CartContextProvider = ({ children }) => {
   };
 
   const removeItemFromCart = (itemId) => {
+    const itemKey = getItemKey(itemId);
+
     setCart((prev) => {
-      const exists = prev.find((i) => i.id === itemId);
+      const exists = prev.find((i) => getItemKey(i) === itemKey);
 
       if (!exists) return prev;
 
-      if (exists.count === 1) {
-        return prev.filter((i) => i.id !== itemId);
+      if ((exists.count || 1) === 1) {
+        return prev.filter((i) => getItemKey(i) !== itemKey);
       }
 
       return prev.map((i) =>
-        i.id === itemId ? { ...i, count: i.count - 1 } : i
+        getItemKey(i) === itemKey ? { ...i, count: (i.count || 1) - 1 } : i
       );
     });
   };
@@ -116,15 +167,10 @@ const CartContextProvider = ({ children }) => {
   const clearCart = () => setCart([]);
 
   const login = async (email, password) => {
-    const res = await fetch(`${API}/auth/login`, {
+    const data = await requestJson(buildApiUrl('/auth/login'), {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
     });
-
-    const data = await res.json();
-
-    if (!res.ok) throw new Error(data.message);
 
     localStorage.setItem('token', data.token);
     localStorage.setItem('user', JSON.stringify(data.user));
@@ -136,15 +182,10 @@ const CartContextProvider = ({ children }) => {
   };
 
   const register = async (name, email, password) => {
-    const res = await fetch(`${API}/auth/register`, {
+    const data = await requestJson(buildApiUrl('/auth/register'), {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, password }),
     });
-
-    const data = await res.json();
-
-    if (!res.ok) throw new Error(data.message);
 
     localStorage.setItem('token', data.token);
     localStorage.setItem('user', JSON.stringify(data.user));
@@ -177,32 +218,50 @@ const CartContextProvider = ({ children }) => {
   };
 
   const forgotPassword = async (email) => {
-    const res = await fetch(`${API}/auth/forgot-password`, {
+    return requestJson(buildApiUrl('/auth/forgot-password'), {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email }),
     });
-
-    const data = await res.json();
-
-    if (!res.ok) throw new Error(data.message);
-
-    return data;
   };
 
-  const resetPassword = async (resetToken, newPassword) => {
-    const res = await fetch(`${API}/auth/reset-password/${resetToken}`, {
+  const sendOtp = async (email, purpose) => {
+    const attempts = [
+      { url: buildApiUrl('/auth/send-otp'), body: { email, purpose } },
+      { url: buildApiUrl('/auth/sendOtp'), body: { email, purpose } },
+      { url: buildApiUrl('/auth/send-otp'), body: { email, type: purpose } },
+    ];
+
+    let lastError = new Error('Failed to send OTP');
+
+    for (const attempt of attempts) {
+      try {
+        return await requestJson(attempt.url, {
+          method: 'POST',
+          body: JSON.stringify(attempt.body),
+        });
+      } catch (err) {
+        lastError = err;
+      }
+    }
+
+    throw lastError;
+  };
+
+  const verifyOtp = async (email, otp, purpose) => {
+    return requestJson(buildApiUrl('/auth/verify-otp'), {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password: newPassword }),
+      body: JSON.stringify({ email, otp, purpose }),
     });
-
-    const data = await res.json();
-
-    if (!res.ok) throw new Error(data.message);
-
-    return data;
   };
+
+  const resetPassword = async (email, otp, newPassword) => {
+    return requestJson(buildApiUrl('/auth/reset-password'), {
+      method: 'POST',
+      body: JSON.stringify({ email, otp, newPassword }),
+    });
+  };
+
+
 
   return (
     <CartContext.Provider value={{
@@ -218,6 +277,8 @@ const CartContextProvider = ({ children }) => {
       logout,
 
       forgotPassword,
+      sendOtp,
+      verifyOtp,
       resetPassword,
 
       searchTerm,

@@ -1,55 +1,31 @@
 import React from 'react';
-import { useLocation, Link } from 'react-router-dom';
-import QRCode from "react-qr-code";
+import { Link, useLocation } from 'react-router-dom';
+import QRCode from 'react-qr-code';
 
 function Payment() {
   const location = useLocation();
-<<<<<<< HEAD
   const amount = location.state?.amount || 0;
 
-  const upiId = "foodpoint@upi"; 
-  const merchantName = "Food App Store";
-  
+  const upiId = 'foodpoint@upi';
+  const merchantName = 'Food App Store';
   const upiLink = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${amount}&cu=INR`;
 
   return (
-    <div className="w-full min-h-screen bg-gray-50 flex flex-col items-center justify-center pt-32 pb-16 px-6 md:px-16">
-=======
-   const amount = location.state?.amount || 0;
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 px-6 pb-16 pt-32 md:px-16">
+      <h1 className="mb-6 text-3xl font-bold text-orange-600">Scan to Pay</h1>
 
-   const upiId = "foodpoint@upi"; 
-  const merchantName = "Food App Store";
-  
-   const upiLink = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${amount}&cu=INR`;
-
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4">
->>>>>>> 7dbdd5acc13454d943579490d8e995784acb0281
-      <h1 className="text-3xl font-bold mb-6 text-orange-600">Scan to Pay</h1>
-      
-      <div className="bg-white p-6 rounded-2xl shadow-xl border-2 border-orange-200">
+      <div className="rounded-2xl border-2 border-orange-200 bg-white p-6 shadow-xl">
         <QRCode value={upiLink} size={256} />
       </div>
 
-<<<<<<< HEAD
-      <div className="mt-8 text-center bg-white p-6 rounded-xl border border-gray-100 shadow-sm w-full max-w-xs">
+      <div className="mt-8 w-full max-w-xs rounded-xl border border-gray-100 bg-white p-6 text-center shadow-sm">
         <p className="text-xl font-semibold text-gray-700">Total Amount Payable:</p>
-        <p className="text-4xl font-black text-green-700 mt-2">₹{amount}</p>
+        <p className="mt-2 text-4xl font-black text-green-700">₹{amount}</p>
       </div>
 
-      <div className="mt-10 space-y-4 w-full max-w-xs">
-        <Link to="/cart" className="w-full block">
-          <button className="w-full border-2 border-orange-500 text-orange-600 py-3 rounded-lg font-bold hover:bg-orange-50 cursor-pointer">
-=======
-      <div className="mt-8 text-center">
-        <p className="text-xl font-semibold text-gray-700">Total Amount Payable:</p>
-        <p className="text-4xl font-black text-green-700 mt-2">${amount}</p>
-      </div>
-
-      <div className="mt-10 space-y-4 w-full max-w-xs">
-        <Link to="/cart">
-          <button className="w-full border-2 border-orange-500 text-orange-600 py-3 rounded-lg font-bold hover:bg-orange-50">
->>>>>>> 7dbdd5acc13454d943579490d8e995784acb0281
+      <div className="mt-10 w-full max-w-xs space-y-4">
+        <Link to="/cart" className="block w-full">
+          <button className="w-full rounded-lg border-2 border-orange-500 py-3 font-bold text-orange-600 transition hover:bg-orange-50">
             Back to Cart
           </button>
         </Link>

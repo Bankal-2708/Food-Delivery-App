@@ -6,7 +6,7 @@ import Cart from "../../assets/Cart.jpeg";
 import sidemenu from "../../assets/sideMenu.png";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import Sidenavbar from "./Sidenavbar";
-import LoginForm from "../LoginForm/AuthForm";   
+import LoginForm from "../LoginForm/AuthForm";
 
 function Navbar() {
   const { cart, searchTerm, setSearchTerm, user, logout } = useContext(CartContext);
@@ -30,20 +30,18 @@ function Navbar() {
     <>
       <nav
         id="home"
-<<<<<<< HEAD
         className="fixed top-0 left-0 w-full bg-white shadow-md z-50 flex justify-between items-center px-6 md:px-16 py-3"
-=======
-        className="fixed top-0 left-0 w-full bg-white shadow-md z-50 flex justify-between items-center px-10 py-3"
->>>>>>> 7dbdd5acc13454d943579490d8e995784acb0281
       >
+        {/* Logo */}
         <div className="hidden sm:block">
           <img
             src={logoimg}
-            alt=""
+            alt="Logo"
             className="lg:h-30 lg:w-30 md:h-22 md:w-22 rounded-full object-cover"
           />
         </div>
 
+        {/* Mobile hamburger */}
         <div className="block sm:hidden p-1">
           <img
             src={sidemenu}
@@ -54,6 +52,7 @@ function Navbar() {
           {open && <Sidenavbar onClose={() => setOpen(false)} />}
         </div>
 
+        {/* Nav links */}
         <div className="hidden sm:block">
           <ul className="flex lg:gap-7 md:gap-3 font-bold text-lg cursor-pointer">
             {items.map((item) => (
@@ -75,6 +74,7 @@ function Navbar() {
           </ul>
         </div>
 
+        {/* Search + Cart */}
         <div className="flex lg:justify-between px-4 pt-2 lg:px-0 lg:py-0 md:w-85 gap-8 lg:w-120 text-gray-400">
           <input
             type="text"
@@ -85,7 +85,7 @@ function Navbar() {
           />
           <img
             src={search}
-            alt=""
+            alt="Search"
             className="h-12 w-12 rounded-full hidden lg:block"
           />
           <Link to="/cart">
@@ -102,6 +102,7 @@ function Navbar() {
           </Link>
         </div>
 
+        {/* Auth */}
         <div>
           {user ? (
             <div className="hidden sm:flex items-center gap-3">
@@ -129,4 +130,4 @@ function Navbar() {
   );
 }
 
-export default Navbar;
+export default Navbar;                                                                                                                                  
