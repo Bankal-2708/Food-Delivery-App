@@ -3,7 +3,7 @@ import "./App.css";
 import AdminNavbar from "./Components/AdminNavbar";
 import AdminBody from "./Components/AdminBody";
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+const API_BASE = import.meta.env.VITE_API_URL || "https://food-backend-rouge.vercel.app/api";
 const CATEGORIES = ["Pizza", "Dosa", "Momos", "Paneer Roll", "Biryani", "Burger", "Paratha", "Pasta", "Rabri", "Chicken"];
 const initialForm = { name: "", description: "", price: "", category: CATEGORIES[0], imageUrl: "" };
 
@@ -138,7 +138,7 @@ export default function App() {
       category: food.category, 
       imageUrl: food.imageUrl || "" 
     });
-    if (food.imageUrl) setImagePreview(`http://localhost:5000${food.imageUrl}`);
+    if (food.imageUrl) setImagePreview(`https://food-backend-rouge.vercel.app${food.imageUrl}`);
     setTab("add");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };

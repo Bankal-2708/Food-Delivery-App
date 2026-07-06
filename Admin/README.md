@@ -31,7 +31,7 @@ npm run build
 
 Create a `.env.local` file:
 ```
-VITE_API_URL=http://localhost:5000/api
+VITE_API_URL=https://food-backend-git-main-bankal2708s-projects.vercel.app/api
 ```
 
 ## Authentication

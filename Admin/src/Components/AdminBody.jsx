@@ -45,7 +45,7 @@ export default function AdminBody({
                 <div key={food._id} style={{ background: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: 12, overflow: "hidden", transition: "all 0.3s" }}>
                   <div style={{ width: "100%", height: 160, background: "#252525", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
                     {food.imageUrl ? (
-                      <img src={`http://localhost:5000${food.imageUrl}`} alt={food.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                      <img src={`https://food-backend-git-main-bankal2708s-projects.vercel.app${food.imageUrl}`} alt={food.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                     ) : (
                       <div style={{ fontSize: 48 }}>🍽</div>
                     )}
