@@ -225,26 +225,10 @@ const CartContextProvider = ({ children }) => {
   };
 
   const sendOtp = async (email, purpose) => {
-    const attempts = [
-      { url: buildApiUrl('/auth/send-otp'), body: { email, purpose } },
-      { url: buildApiUrl('/auth/sendOtp'), body: { email, purpose } },
-      { url: buildApiUrl('/auth/send-otp'), body: { email, type: purpose } },
-    ];
-
-    let lastError = new Error('Failed to send OTP');
-
-    for (const attempt of attempts) {
-      try {
-        return await requestJson(attempt.url, {
-          method: 'POST',
-          body: JSON.stringify(attempt.body),
-        });
-      } catch (err) {
-        lastError = err;
-      }
-    }
-
-    throw lastError;
+    return requestJson(buildApiUrl('/auth/send-otp'), {
+      method: 'POST',
+      body: JSON.stringify({ email, purpose }),
+    });
   };
 
   const verifyOtp = async (email, otp, purpose) => {
@@ -257,11 +241,9 @@ const CartContextProvider = ({ children }) => {
   const resetPassword = async (email, otp, newPassword) => {
     return requestJson(buildApiUrl('/auth/reset-password'), {
       method: 'POST',
-      body: JSON.stringify({ email, otp, newPassword }),
+       body: JSON.stringify({ email, otp, newPassword, purpose: 'reset' }),
     });
   };
-
-
 
   return (
     <CartContext.Provider value={{
