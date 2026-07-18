@@ -1,6 +1,6 @@
  
  
-# 🍔 CraveRoll - Full-Stack Food Delivery Application
+# 🍔 FreshBite- Full-Stack Food Delivery Application
 
 A robust, production-ready full-stack food delivery application built using the **MERN Stack** (MongoDB, Express.js, React.js, Node.js). The project features a responsive customer-facing storefront, a dynamic admin management dashboard, an item-matching storage layer, and an adaptive checkout workflow supporting both Cash on Delivery (COD) and Online Payments via real-time generated dynamic QR Codes.
 
